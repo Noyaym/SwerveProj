@@ -66,8 +66,10 @@ public class Module implements Sendable {
     }
 
     public void setReversed(double a) {
-        if (a-getAngle()>0) {mAngle.setInverted(false);}
-        else {mAngle.setInverted(true);}
+        if (a-getAngle()>0) {
+            mAngle.setInverted(false);
+        } else {
+            mAngle.setInverted(true);}
     }
 
     public void setAngle(double a) {
