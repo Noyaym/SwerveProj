@@ -26,21 +26,25 @@ public final class Constants {
 
     public final class ModuleConst {
 
-        public static final int mVel_PORT_NUM1 = 0;
-        public static final int mAngle_PORT_NUM1 = 0;
-        public static final int CAN_PORT_NUM1 = 0;
+        public static final int FRONT_LEFT_MOVE_MOTOR_ID = 2;
+        public static final int FRONT_LEFT_TURN_MOTOR_ID = 1;
+        public static final int FRONT_LEFT_CANCODER_ID = 11;
 
-        public static final int mVel_PORT_NUM2 = 0;
-        public static final int mAngle_PORT_NUM2 = 0;
-        public static final int CAN_PORT_NUM2 = 0;
+        public static final int FRONT_RIGHT_MOVE_MOTOR_ID = -1;
+        public static final int FRONT_RIGHT_TURN_MOTOR_ID = -1;
+        public static final int FRONT_RIGHT_CANCODER_ID = -1;
 
-        public static final int mVel_PORT_NUM3 = 0;
-        public static final int mAngle_PORT_NUM3 = 0;
-        public static final int CAN_PORT_NUM3 = 0;
+        public static final int BACK_LEFT_MOVE_MOTOR_ID = -1;
+        public static final int BACK_LEFT_TURN_MOTOR_ID = -1;
+        public static final int BACK_LEFT_CANCODER_ID = -1;
 
-        public static final int mVel_PORT_NUM4 = 0;
-        public static final int mAngle_PORT_NUM4 = 0;
-        public static final int CAN_PORT_NUM4 = 0;
+        public static final int BACK_RIGHT_MOVE_MOTOR_ID = -1;
+        public static final int BACK_RIGHT_TURN_MOTOR_ID = -1;
+        public static final int BACK_RIGHT_CANCODER_ID = -1;
+
+        public static final double STARTING_POSITION_X = 0;
+        public static final double STARTING_POSITION_Y = 0;
+        public static final double STARTING_ANGLE = 0;
 
         public static final double mVel_Kp = 0;
         public static final double mVel_Ki = 0;
@@ -77,6 +81,7 @@ public final class Constants {
         public static final double a2r_Ki = 0;
         public static final double a2r_Kd = 0;
     }
+
 
     
     public final static class kinematics {

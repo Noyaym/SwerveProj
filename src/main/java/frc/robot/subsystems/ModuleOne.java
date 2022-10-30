@@ -14,23 +14,17 @@ import frc.robot.Module;
 public class ModuleOne extends SubsystemBase {
 
     private final Module module;
-    private final PigeonIMU gyro;
-    private final SwerveDriveOdometry odometry;
     public ModuleOne() {
-        gyro = new PigeonIMU(Constants.GYRO_PORT);
-        odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, gyroAngle());
 
-        module = new Module(false, Constants.ModuleConst.CAN_PORT_NUM1,
-        Constants.ModuleConst.mVel_PORT_NUM1, Constants.ModuleConst.mAngle_PORT_NUM1);
+        module = new Module(false, Constants.ModuleConst.FRONT_RIGHT_MOVE_MOTOR_ID, Constants.ModuleConst.FRONT_RIGHT_TURN_MOTOR_ID,
+        Constants.ModuleConst.FRONT_RIGHT_CANCODER_ID);
 
 
         setDefaultCommand(new RunCommand(()-> module.setVel(0), this)
         .alongWith(new RunCommand(()->module.setAngle(0), this)));
     }
 
-    public Rotation2d gyroAngle(){
-        return Rotation2d.fromDegrees(gyro.getFusedHeading()); 
-    }
+
 
 
     @Override
