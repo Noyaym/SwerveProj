@@ -4,10 +4,15 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ModuleOne;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -23,10 +28,6 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -45,4 +46,34 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
+
+  
+  public ModuleOne moduleOne;
+  private static PigeonIMU gyro;
+  private static Joystick joystickXY;
+  private static Joystick joystickDirection;
+
+  public RobotContainer() {
+    moduleOne = new ModuleOne();
+
+  }
+
+  public static PigeonIMU getGyro() {
+    return gyro;
+  }
+  public static Joystick getJoystickXY() {
+    return joystickXY;
+  }
+
+  public static Joystick getJoystickDirection() {
+    return joystickDirection;
+  }
+
+
+
+
+
+
+  
 }
