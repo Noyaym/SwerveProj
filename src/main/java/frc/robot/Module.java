@@ -75,6 +75,18 @@ public class Module implements Sendable {
         mAngle.set(ControlMode.Position, a*Constants.ModuleConst.PULSE_PER_ANGLE);
     }
 
+    public void setPower(double p) {
+        mAngle.set(ControlMode.PercentOutput, p);
+    }
+
+    public TalonFX getMoveMotor() {
+        return mVel;
+    }
+
+    public TalonFX getSeerMotor() {
+        return mAngle;
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Module vel", this::getVel, null);

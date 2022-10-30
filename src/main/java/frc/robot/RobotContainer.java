@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ModuleOne;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -23,10 +24,6 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -45,4 +42,18 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
+
+  
+  private ModuleOne moduleOne;
+
+  public RobotContainer() {
+    moduleOne = new ModuleOne();
+
+  }
+
+
+
+
+  
 }

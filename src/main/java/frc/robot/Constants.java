@@ -21,9 +21,9 @@ public final class Constants {
     public final class ModuleConst {
 
 
-        public static final int mVel_PORT_NUM1 = 0;
-        public static final int mAngle_PORT_NUM1 = 0;
-        public static final int CAN_PORT_NUM1 = 0;
+        public static final int mVel_PORT_NUM1 = 2;
+        public static final int mAngle_PORT_NUM1 = 1;
+        public static final int CAN_PORT_NUM1 = 11;
 
         public static final int mVel_PORT_NUM2 = 0;
         public static final int mAngle_PORT_NUM2 = 0;
@@ -37,25 +37,25 @@ public final class Constants {
         public static final int mAngle_PORT_NUM4 = 0;
         public static final int CAN_PORT_NUM4 = 0;
 
-        public static final double mVel_Kp = 0;
+        public static final double mVel_Kp = 0.005;
         public static final double mVel_Ki = 0;
         public static final double mVel_Kd = 0;
 
-        public static final double mAngle_Kp = 0;
+        public static final double mAngle_Kp = 0.08;
         public static final double mAngle_Ki = 0;
-        public static final double mAngle_Kd = 0;
+        public static final double mAngle_Kd = 0.008;
 
 
         public static final double PPR_FALCON = 2048;
-        public static final double WHEEL_PEREMITER = 0;
-        public static final double GEAR_RATIO_VEL = 0;
+        public static final double WHEEL_PEREMITER = 0.1016;
+        public static final double GEAR_RATIO_VEL = 12.8;
         public static final double PULSE_PER_METER = PPR_FALCON*GEAR_RATIO_VEL/WHEEL_PEREMITER;
 
-        public static final double GEAR_RATIO_ANGLE = 0;
+        public static final double GEAR_RATIO_ANGLE = 12.8;
         public static final double PULSE_PER_ANGLE = GEAR_RATIO_ANGLE*PPR_FALCON/360;
 
-        public static final double Ks = 0;
-        public static final double Kv = 0;
+        public static final double Ks = 0.003;
+        public static final double Kv = 0.002;
 
 
     }
