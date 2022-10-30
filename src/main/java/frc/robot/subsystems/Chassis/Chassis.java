@@ -22,27 +22,14 @@ import frc.robot.Constants;
 
 public class Chassis extends SubsystemBase {
 
-    private final Module m1;
-    private final Module m2;
-    private final Module m3;
-    private final Module m4;
+    //TO DO
 
    
 
 
 
     public Chassis() {
-        m1 = new Module(false, Constants.ModuleConst.CAN_PORT_NUM1,
-        Constants.ModuleConst.mVel_PORT_NUM1, Constants.ModuleConst.mAngle_PORT_NUM1);
-
-        m2 = new Module(false, Constants.ModuleConst.CAN_PORT_NUM2,
-        Constants.ModuleConst.mVel_PORT_NUM2, Constants.ModuleConst.mAngle_PORT_NUM2);
-
-        m3 = new Module(false, Constants.ModuleConst.CAN_PORT_NUM3,
-        Constants.ModuleConst.mVel_PORT_NUM3, Constants.ModuleConst.mAngle_PORT_NUM3);
-
-        m4 = new Module(false, Constants.ModuleConst.CAN_PORT_NUM4,
-        Constants.ModuleConst.mVel_PORT_NUM4, Constants.ModuleConst.mAngle_PORT_NUM4);
+        //TO DO
 
         
 
@@ -53,10 +40,7 @@ public class Chassis extends SubsystemBase {
 
     public SwerveModuleState[] getCurrentModuleStates() {
         SwerveModuleState[] sModuleStates = new SwerveModuleState[4];
-        sModuleStates[1] = new SwerveModuleState(m1.getVel(), new Rotation2d(m1.getAngle()));
-        sModuleStates[2] = new SwerveModuleState(m2.getVel(), new Rotation2d(m2.getAngle()));
-        sModuleStates[3] = new SwerveModuleState(m3.getVel(), new Rotation2d(m3.getAngle()));
-        sModuleStates[4] = new SwerveModuleState(m4.getVel(), new Rotation2d(m4.getAngle()));
+        //TO DO:
         return sModuleStates;
 
         
@@ -75,17 +59,7 @@ public class Chassis extends SubsystemBase {
 
 
     public void setModules (SwerveModuleState[] sms) {
-        m1.setAngle(sms[0].angle.getDegrees());
-        m1.setVel(sms[0].speedMetersPerSecond);
-
-        m2.setAngle(sms[1].angle.getDegrees());
-        m2.setVel(sms[1].speedMetersPerSecond);
-
-        m3.setAngle(sms[2].angle.getDegrees());
-        m3.setVel(sms[2].speedMetersPerSecond);
-
-        m4.setAngle(sms[3].angle.getDegrees());
-        m4.setVel(sms[3].speedMetersPerSecond);
+        //TO DO:
 
     }
 
