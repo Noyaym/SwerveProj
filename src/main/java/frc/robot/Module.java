@@ -83,7 +83,7 @@ public class Module implements Sendable {
         return mVel;
     }
 
-    public TalonFX getSeerMotor() {
+    public TalonFX getSteerMotor() {
         return mAngle;
     }
 

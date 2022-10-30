@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -45,12 +49,28 @@ public class RobotContainer {
 
 
   
-  private ModuleOne moduleOne;
+  public ModuleOne moduleOne;
+  private static PigeonIMU gyro;
+  private static Joystick joystickXY;
+  private static Joystick joystickDirection;
 
   public RobotContainer() {
     moduleOne = new ModuleOne();
 
   }
+
+  public static PigeonIMU getGyro() {
+    return gyro;
+  }
+  public static Joystick getJoystickXY() {
+    return joystickXY;
+  }
+
+  public static Joystick getJoystickDirection() {
+    return joystickDirection;
+  }
+
+
 
 
 
