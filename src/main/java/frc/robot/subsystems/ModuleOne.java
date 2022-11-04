@@ -30,6 +30,7 @@ public class ModuleOne extends SubsystemBase {
 
 
 
+
     @Override
     public void initSendable(SendableBuilder builder) {
         SmartDashboard.putNumber("target vel", 0);
@@ -42,6 +43,8 @@ public class ModuleOne extends SubsystemBase {
         SmartDashboard.putData("set angle", new RunCommand(()->
         module.setAngle(SmartDashboard.getNumber("target angle", 0)), this)
         .andThen(new InstantCommand(()-> module.setPower(0), this)));
+
+        SmartDashboard.putData("Calibrate", new InstantCommand(()-> module.calibrate(), this));
 
         builder.addDoubleProperty("velocity", this::getVelocity, null);
         builder.addDoubleProperty("angle", this::getAngle, null);
