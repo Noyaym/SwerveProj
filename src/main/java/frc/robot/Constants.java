@@ -53,13 +53,6 @@ public final class Constants {
 
         public static final double PPR_FALCON = 2048;
 
-        public static final double WHEEL_PEREMITER = 0;
-        public static final double GEAR_RATIO_VEL = 0;
-        public static final double PULSE_PER_METER = PPR_FALCON * GEAR_RATIO_VEL / WHEEL_PEREMITER;
-
-        public static final double GEAR_RATIO_ANGLE = 0;
-        public static final double PULSE_PER_ANGLE = GEAR_RATIO_ANGLE * PPR_FALCON / 360;
-
         public static final double WHEEL_PEREMITER = 0.1016;
         public static final double GEAR_RATIO_VEL = 12.8;
         public static final double PULSE_PER_METER = PPR_FALCON*GEAR_RATIO_VEL/WHEEL_PEREMITER;
@@ -69,8 +62,6 @@ public final class Constants {
 
         public static final double Ks = 0.003;
         public static final double Kv = 0.002;
-        public static final double GEAR_RATIO_ANGLE = 12.8;
-        public static final double PULSE_PER_ANGLE = GEAR_RATIO_ANGLE*PPR_FALCON/360;
     }
 
     public final class Buttons {

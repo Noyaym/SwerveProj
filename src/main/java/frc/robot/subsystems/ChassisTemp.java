@@ -16,12 +16,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Module;
 
-public class Chassis extends SubsystemBase {
+public class ChassisTemp extends SubsystemBase {
   private final Module[] swerveModules;
   private final Module front_right, back_right, front_left, back_left;
   private final PigeonIMU gyro;
   private final SwerveDriveOdometry odometry;
-  public Chassis() {
+  public ChassisTemp() {
     
     gyro = new PigeonIMU(Constants.ChassiConst.jyro_PORT_NUM);
     odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, getGyroHeading());
@@ -41,7 +41,6 @@ public class Chassis extends SubsystemBase {
     swerveModules[1] = front_left;
     swerveModules[2] = back_right;
     swerveModules[3] = back_left;
-    'ד'
   }
 
   public void drive(boolean isReversed, double fowardVelocity, double sidewaysVelocity, double angularVelocity) {
