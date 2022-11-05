@@ -16,13 +16,12 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class Module implements Sendable {
 
-
     private final TalonFX mVel;
     private final TalonFX mAngle;
     private final CANCoder CAN;
     private final SimpleMotorFeedforward ff;
 
-    public Module(boolean isC, int CAN, int vel, int angle) {
+    public Module(boolean isC, int vel, int angle, int CAN) {
         this.mVel = new TalonFX(vel);
         this.mAngle = new TalonFX(angle);
         this.CAN = new CANCoder(CAN);
@@ -44,35 +43,32 @@ public class Module implements Sendable {
             calibrate();
         }
 
-
-
-
-
     }
 
-
-
     public double getAngle() {
-       return CAN.getAbsolutePosition();
+        return CAN.getAbsolutePosition();
     }
 
     public double getVel() {
-        return mVel.getSelectedSensorVelocity()/Constants.ModuleConst.PULSE_PER_METER*10;
+        return mVel.getSelectedSensorVelocity() / Constants.ModuleConst.PULSE_PER_METER * 10;
     }
 
     public void setVel(double v) {
-        mVel.set(ControlMode.Velocity, v*Constants.ModuleConst.PULSE_PER_METER/10,
-        DemandType.ArbitraryFeedForward, ff.calculate(v));
+        mVel.set(ControlMode.Velocity, v * Constants.ModuleConst.PULSE_PER_METER / 10,
+                DemandType.ArbitraryFeedForward, ff.calculate(v));
     }
 
     public void setReversed(double a) {
-        if (a-getAngle()>0) {mAngle.setInverted(false);}
-        else {mAngle.setInverted(true);}
+        if (a - getAngle() > 0) {
+            mAngle.setInverted(false);
+        } else {
+            mAngle.setInverted(true);
+        }
     }
 
     public void setAngle(double a) {
         setReversed(a);
-        mAngle.set(ControlMode.Position, a*Constants.ModuleConst.PULSE_PER_ANGLE);
+        mAngle.set(ControlMode.Position, a * Constants.ModuleConst.PULSE_PER_ANGLE);
     }
 
     public void setPower(double p) {
@@ -92,9 +88,6 @@ public class Module implements Sendable {
         builder.addDoubleProperty("Module vel", this::getVel, null);
         builder.addDoubleProperty("Module angle", this::getAngle, null);
 
-        
-        
-        
     }
 
     public void calibrate() {
@@ -102,8 +95,4 @@ public class Module implements Sendable {
         mAngle.setSelectedSensorPosition(0);
     }
 
-
-
-
-    
 }
