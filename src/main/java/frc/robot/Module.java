@@ -18,13 +18,14 @@ public class Module implements Sendable {
 
     private final TalonFX mVel;
     private final TalonFX mAngle;
-    private final CANCoder CAN;
+    private final CANCoder encoder;
     private final SimpleMotorFeedforward ff;
+    private double offset;
 
     public Module(boolean isC, int vel, int angle, int CAN) {
         this.mVel = new TalonFX(vel);
         this.mAngle = new TalonFX(angle);
-        this.CAN = new CANCoder(CAN);
+        this.encoder = new CANCoder(CAN);
 
         mVel.configFactoryDefault();
         mAngle.configFactoryDefault();
@@ -46,33 +47,43 @@ public class Module implements Sendable {
     }
 
     public double getAngle() {
-        return CAN.getAbsolutePosition();
+        return encoder.getAbsolutePosition()-offset;
     }
 
     public double getVel() {
         return mVel.getSelectedSensorVelocity() / Constants.ModuleConst.PULSE_PER_METER * 10;
     }
 
-    public void setVel(double v) {
-        mVel.set(ControlMode.Velocity, v * Constants.ModuleConst.PULSE_PER_METER / 10,
-                DemandType.ArbitraryFeedForward, ff.calculate(v));
+    public void setVel(double velocity) {
+        mVel.set(ControlMode.Velocity, velocity * Constants.ModuleConst.PULSE_PER_METER / 10,
+                DemandType.ArbitraryFeedForward, ff.calculate(velocity));
     }
 
-    public void setReversed(double a) {
-        if (a - getAngle() > 0) {
+    public void setReversed(double angle) {
+        if (angle - getAngle() > 0) {
             mAngle.setInverted(false);
         } else {
             mAngle.setInverted(true);
         }
     }
 
-    public void setAngle(double a) {
-        setReversed(a);
-        mAngle.set(ControlMode.Position, a * Constants.ModuleConst.PULSE_PER_ANGLE);
+    public double convertAngle2Pulse(double angle) {
+        return angle *Constants.ModuleConst.PULSE_PER_ANGLE;
     }
 
-    public void setPower(double p) {
-        mAngle.set(ControlMode.PercentOutput, p);
+    public double convertOffset2Pulse() {
+        return offset*Constants.ModuleConst.PULSE_PER_ANGLE;
+    }
+
+    public void setAngle(double angle) {
+        setReversed(angle);
+        mAngle.set(ControlMode.Position, convertAngle2Pulse(angle)
+        + convertOffset2Pulse());
+    }
+    
+
+    public void setPower(double power) {
+        mAngle.set(ControlMode.PercentOutput, power);
     }
 
     public TalonFX getMoveMotor() {
@@ -91,7 +102,7 @@ public class Module implements Sendable {
     }
 
     public void calibrate() {
-        CAN.setPosition(0);
+        offset = encoder.getAbsolutePosition();
         mAngle.setSelectedSensorPosition(0);
     }
 
