@@ -21,6 +21,7 @@ public class ModuleOne extends SubsystemBase {
         module = new Module(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        module.getMoveMotor().setInverted(Constants.ModuleConst.FRONT_LEFT_SET_INVERT_TYPE);
 
     }
 
@@ -32,17 +33,30 @@ public class ModuleOne extends SubsystemBase {
         return module.getAngle();
     }
 
+    public double getSelectedSensorPosition() {
+        return module.getSelectedSensorPosition();
+    }
+
+    public double getOffset() {
+        return module.getOffset();
+    }
+
+    public boolean isReverse() {
+        return module.isReversed(getAngle());
+
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         SmartDashboard.putNumber("target vel", 0);
         SmartDashboard.putNumber("target angle", 0);
 
         SmartDashboard.putData("set vel",
-                new InstantCommand(() -> module.setVel(SmartDashboard.getNumber("target vel", 0)), this)
+                new RunCommand(() -> module.setVel(SmartDashboard.getNumber("target vel", 0)), this)
                         .andThen(new InstantCommand(() -> module.setVel(0), this)));
 
         SmartDashboard.putData("set angle",
-                new InstantCommand(() -> module.setAngle(SmartDashboard.getNumber("target angle", 0)), this)
+                new RunCommand(() -> module.setAngle(SmartDashboard.getNumber("target angle", 0)), this)
                         .andThen(new InstantCommand(() -> module.setPower(0), this)));
 
         SmartDashboard.putData("Calibrate", new InstantCommand(() -> {
@@ -52,6 +66,10 @@ public class ModuleOne extends SubsystemBase {
 
         builder.addDoubleProperty("velocity", this::getVelocity, null);
         builder.addDoubleProperty("angle", this::getAngle, null);
+
+        builder.addDoubleProperty("offset", this::getOffset, null);
+        builder.addBooleanProperty("is reversed", this::isReverse, null);
+        builder.addDoubleProperty("motor position", this::getSelectedSensorPosition, null);
         // builder.addDoubleProperty("Error", module.getSeerMotor()::getClosedLoopError,
         // null);
         // builder.addDoubleProperty("Output",

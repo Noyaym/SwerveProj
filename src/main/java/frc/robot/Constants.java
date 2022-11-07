@@ -29,6 +29,7 @@ public final class Constants {
         public static final int FRONT_LEFT_MOVE_MOTOR_ID = 2;
         public static final int FRONT_LEFT_TURN_MOTOR_ID = 1;
         public static final int FRONT_LEFT_CANCODER_ID = 11;
+        public static final boolean FRONT_LEFT_SET_INVERT_TYPE = true;
 
 
         public static final int FRONT_RIGHT_MOVE_MOTOR_ID = -1;
@@ -43,13 +44,13 @@ public final class Constants {
         public static final int BACK_RIGHT_TURN_MOTOR_ID = -1;
         public static final int BACK_RIGHT_CANCODER_ID = -1;
 
-        public static final double mVel_Kp = 0.005;
-        public static final double mVel_Ki = 0;
-        public static final double mVel_Kd = 0;
+        public static final double mVel_Kp = 0.0058;
+        public static final double mVel_Ki = 0.0;
+        public static final double mVel_Kd = 0.0006;
 
-        public static final double mAngle_Kp = 0.08;
+        public static final double mAngle_Kp = 0.058;
         public static final double mAngle_Ki = 0;
-        public static final double mAngle_Kd = 0.008;
+        public static final double mAngle_Kd = 0.00;
 
         public static final double PPR_FALCON = 2048;
 

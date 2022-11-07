@@ -54,6 +54,10 @@ public class Module implements Sendable {
         return mVel.getSelectedSensorVelocity() / Constants.ModuleConst.PULSE_PER_METER * 10;
     }
 
+    public double getOffset() {
+        return offset;
+    }
+
     public void setVel(double velocity) {
         mVel.set(ControlMode.Velocity, velocity * Constants.ModuleConst.PULSE_PER_METER / 10,
                 DemandType.ArbitraryFeedForward, ff.calculate(velocity));
@@ -61,10 +65,17 @@ public class Module implements Sendable {
 
     public void setReversed(double angle) {
         if (angle - getAngle() > 0) {
-            mAngle.setInverted(false);
-        } else {
             mAngle.setInverted(true);
+        } else {
+            mAngle.setInverted(false);
         }
+    }
+
+    public boolean isReversed(double angle) {
+        if (angle - getAngle() > 0) {
+            return true; }
+        return false;
+
     }
 
     public double convertAngle2Pulse(double angle) {
@@ -76,9 +87,9 @@ public class Module implements Sendable {
     }
 
     public void setAngle(double angle) {
-        setReversed(angle);
-        mAngle.set(ControlMode.Position, convertAngle2Pulse(angle)
-        + convertOffset2Pulse());
+        //setReversed(angle);
+        mAngle.set(ControlMode.Position, convertAngle2Pulse(angle));
+        SmartDashboard.putNumber("angle error", mAngle.getClosedLoopError());
     }
     
 
@@ -92,6 +103,10 @@ public class Module implements Sendable {
 
     public TalonFX getSteerMotor() {
         return mAngle;
+    }
+
+    public double getSelectedSensorPosition() {
+        return mAngle.getSelectedSensorPosition();
     }
 
     @Override
