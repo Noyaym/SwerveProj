@@ -86,9 +86,14 @@ public class Module implements Sendable {
         return offset*Constants.ModuleConst.PULSE_PER_ANGLE;
     }
 
+    public double calcFF(double angle) {
+        return convertAngle2Pulse(10); //still not sure about that
+    }
+
     public void setAngle(double angle) {
         //setReversed(angle);
-        mAngle.set(ControlMode.Position, convertAngle2Pulse(angle));
+        mAngle.set(ControlMode.Position, convertAngle2Pulse(angle),
+        DemandType.ArbitraryFeedForward, calcFF(angle));
         SmartDashboard.putNumber("angle error", mAngle.getClosedLoopError());
     }
     
