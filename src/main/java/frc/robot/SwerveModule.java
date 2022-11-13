@@ -12,9 +12,8 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
-public class Module implements Sendable {
+public class SwerveModule implements Sendable {
 
     private final TalonFX mVel;
     private final TalonFX mAngle;
@@ -22,7 +21,7 @@ public class Module implements Sendable {
     private final SimpleMotorFeedforward ff;
     private double offset;
 
-    public Module(boolean isC, int vel, int angle, int CAN) {
+    public SwerveModule(boolean isC, int vel, int angle, int CAN) {
         this.mVel = new TalonFX(vel);
         this.mAngle = new TalonFX(angle);
         this.encoder = new CANCoder(CAN);
@@ -47,7 +46,7 @@ public class Module implements Sendable {
     }
 
     public double getAngle() {
-        return encoder.getAbsolutePosition()-offset;
+        return encoder.getAbsolutePosition() - offset;
     }
 
     public double getVel() {
@@ -73,34 +72,39 @@ public class Module implements Sendable {
 
     public boolean isReversed(double angle) {
         if (angle - getAngle() > 0) {
-            return true; }
+            return true;
+        }
         return false;
 
     }
 
     public double convertAngle2Pulse(double angle) {
-        return angle *Constants.ModuleConst.PULSE_PER_ANGLE;
+        return angle * Constants.ModuleConst.PULSE_PER_ANGLE;
     }
 
     public double convertOffset2Pulse() {
-        return offset*Constants.ModuleConst.PULSE_PER_ANGLE;
+        return offset * Constants.ModuleConst.PULSE_PER_ANGLE;
     }
 
-    public double calcFF(double angle) {
-        return convertAngle2Pulse(10); //still not sure about that
+    public double calcFF() {
+        return convertAngle2Pulse(10); // still not sure about that
     }
 
     public void setAngle(double angle) {
-        //setReversed(angle);
+        // setReversed(angle);
         mAngle.set(ControlMode.Position, convertAngle2Pulse(angle),
-        DemandType.ArbitraryFeedForward, calcFF(angle));
+                DemandType.ArbitraryFeedForward, calcFF());
         SmartDashboard.putNumber("angle error", mAngle.getClosedLoopError());
     }
-    
 
-    public void setPower(double power) {
+    public void setPowerAngle(double power) {
         mAngle.set(ControlMode.PercentOutput, power);
     }
+
+    public void setPowerVelocity(double power) {
+        mVel.set(ControlMode.PercentOutput, power);
+    }
+
 
     public TalonFX getMoveMotor() {
         return mVel;

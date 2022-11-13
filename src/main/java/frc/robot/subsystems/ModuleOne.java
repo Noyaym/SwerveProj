@@ -10,15 +10,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Module;
+import frc.robot.SwerveModule;
 
 public class ModuleOne extends SubsystemBase {
 
-    private final Module module;
+    private final SwerveModule module;
 
     public ModuleOne() {
 
-        module = new Module(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
+        module = new SwerveModule(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
         module.getMoveMotor().setInverted(Constants.ModuleConst.FRONT_LEFT_SET_INVERT_TYPE);
@@ -57,7 +57,7 @@ public class ModuleOne extends SubsystemBase {
 
         SmartDashboard.putData("set angle",
                 new RunCommand(() -> module.setAngle(SmartDashboard.getNumber("target angle", 0)), this)
-                        .andThen(new InstantCommand(() -> module.setPower(0), this)));
+                        .andThen(new InstantCommand(() -> module.setPowerAngle(0), this)));
 
         SmartDashboard.putData("Calibrate", new InstantCommand(() -> {
             module.calibrate();

@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -66,9 +67,9 @@ public final class Constants {
     }
 
     public final class Buttons {
-        public static final int joystickxy_PORT_NUM = 0;
-        public static final int joystickDirections_PORT_NUM = 0;
-        public static final double j_RANGE = 0;
+        public static final int JOYSTICK_XY_PORT_NUM = 0;
+        public static final int JOYSTICK_DIRECTION_PORT_NUM = 0;
+        public static final double JOYSTICK_RANGE = 0;
 
     }
 

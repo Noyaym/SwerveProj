@@ -9,66 +9,62 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class Utils {
-//TO DO: add kinematics, odometry, field, pose
+//TODO: add kinematics, odometry, field, pose
 
 public Utils() {
-    //TO DO: build kinematics, odometry, field, pose
+    //TODO: build kinematics, odometry, field, pose
 }
 
 
 
-    public double getJoystickX (Joystick j) {
-        double x = -j.getX();
+    public static double getJoystickX (Joystick joystick) {
+        double x = -joystick.getX();
         double val;
-        if ((x<Constants.Buttons.j_RANGE) && (x>-Constants.Buttons.j_RANGE)) {
+        if ((x<Constants.Buttons.JOYSTICK_RANGE) && (x>-Constants.Buttons.JOYSTICK_RANGE)) {
             val=0.0;
         }
         else {
             val = Math.signum(x)*((1/1.1)*Math.pow(x, 2)+(1-1/1.1));
-
         }
         return val;
     }
 
-    public double getJoystickY (Joystick j) {
+    public static double getJoystickY (Joystick j) {
         double y = -j.getY();
         double val;
-        if ((y<Constants.Buttons.j_RANGE) && (y>-Constants.Buttons.j_RANGE)) {
+        if ((y<Constants.Buttons.JOYSTICK_RANGE) && (y>-Constants.Buttons.JOYSTICK_RANGE)) {
             val=0.0;
         }
         else {
             val = Math.signum(y)*((1/1.1)*Math.pow(y, 2)+(1-1/1.1));
-
         }
         return val;
     }
 
-    public double getJoystickAngle (Joystick j) {
-        double y = j.getY();
-        double x = j.getX();
+    public double getJoystickAngle (Joystick joystick) {
+        double y = joystick.getY();
+        double x = joystick.getX();
         double angle  = Math.atan(y/x);
         double val;
-        if ((angle<Constants.Buttons.j_RANGE) && (angle>-Constants.Buttons.j_RANGE)) {
+        if ((angle<Constants.Buttons.JOYSTICK_RANGE) && (angle>-Constants.Buttons.JOYSTICK_RANGE)) {
             val=0.0;
         }
         else {
             val = Math.signum(angle)*((1/1.1)*Math.pow(angle, 2)+(1-1/1.1));
-
         }
         return val;
 
     }
 
 
-    public SwerveModuleState[] getSwerveState(double vx, double vy, double desiredAngle) {
+    public static SwerveModuleState[] getSwerveState(double vx, double vy, double desiredAngle) {
         //TO DO: pid of desired angle to radians per sec
         double radiansPerSec = 0;
         return getModuleStates(vx, vy, radiansPerSec, new Rotation2d());
-
     }
 
 
-    public SwerveModuleState[] getModuleStates(double vx, double vy, double radPerSec, Rotation2d angle) {
+    public static SwerveModuleState[] getModuleStates(double vx, double vy, double radPerSec, Rotation2d angle) {
         SwerveModuleState[] sModuleStates = new SwerveModuleState[4];
         //TO DO: kinematics + odometry
         return sModuleStates;

@@ -14,11 +14,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Module;
+import frc.robot.SwerveModule;
 
 public class ChassisTemp extends SubsystemBase {
-  private final Module[] swerveModules;
-  private final Module front_right, back_right, front_left, back_left;
+  private final SwerveModule[] swerveModules;
+  private final SwerveModule front_right, back_right, front_left, back_left;
   private final PigeonIMU gyro;
   private final SwerveDriveOdometry odometry;
   public ChassisTemp() {
@@ -26,15 +26,15 @@ public class ChassisTemp extends SubsystemBase {
     gyro = new PigeonIMU(Constants.ChassiConst.jyro_PORT_NUM);
     odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, getGyroHeading());
     
-    swerveModules = new Module[4];
+    swerveModules = new SwerveModule[4];
 
-    front_right = new Module(false, Constants.ModuleConst.FRONT_RIGHT_MOVE_MOTOR_ID, Constants.ModuleConst.FRONT_RIGHT_TURN_MOTOR_ID,
+    front_right = new SwerveModule(false, Constants.ModuleConst.FRONT_RIGHT_MOVE_MOTOR_ID, Constants.ModuleConst.FRONT_RIGHT_TURN_MOTOR_ID,
     Constants.ModuleConst.FRONT_RIGHT_CANCODER_ID);
-    back_right = new Module(false,Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID, Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
+    back_right = new SwerveModule(false,Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID, Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
         Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
-    front_left = new Module(false,Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID, Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
+    front_left = new SwerveModule(false,Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID, Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
         Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
-    back_left = new Module(false ,Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID, Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
+    back_left = new SwerveModule(false ,Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID, Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
         Constants.ModuleConst.BACK_LEFT_CANCODER_ID);
 
     swerveModules[0] = front_right;
