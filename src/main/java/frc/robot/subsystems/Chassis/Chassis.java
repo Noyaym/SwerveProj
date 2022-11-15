@@ -2,8 +2,9 @@ package frc.robot.subsystems.Chassis;
 
 import java.security.PublicKey;
 
+import com.ctre.phoenix.Util;
 import com.ctre.phoenix.sensors.PigeonIMU;
-
+import frc.robot.subsystems.Chassis.Utils;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,74 +22,68 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants;
 
 public class Chassis extends SubsystemBase {
-
-    //TO DO
-
-   
-
-
+    private final Field2d field;
+    private final SwerveModule[] swerveModules;
+    private final SwerveModule front_right, back_right,  back_left; /*front_left,;*/
+    private final PigeonIMU gyro;
+    private final SwerveDriveOdometry odometry;
 
     public Chassis() {
-        //TO DO
+        this.field = new Field2d();
 
-        
+        gyro = new PigeonIMU(Constants.ChassiConst.jyro_PORT_NUM);
+        odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, getRotation2d());
 
+        swerveModules = new SwerveModule[Constants.NUMBER_OF_WHEELS];
+
+        front_right = new SwerveModule(false, Constants.ModuleConst.FRONT_RIGHT_MOVE_MOTOR_ID,
+                Constants.ModuleConst.FRONT_RIGHT_TURN_MOTOR_ID,
+                Constants.ModuleConst.FRONT_RIGHT_CANCODER_ID);
+        back_right = new SwerveModule(false, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
+                Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
+                Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
+        // front_left = new SwerveModule(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
+        //         Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
+        //         Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        back_left = new SwerveModule(false, Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID,
+                Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
+                Constants.ModuleConst.BACK_LEFT_CANCODER_ID);
+
+        swerveModules[0] = front_right;
+        swerveModules[1] = back_left;
+        swerveModules[2] = back_right;
+        // swerveModules[3] = front_left;
 
     }
 
-    
-
-    public SwerveModuleState[] getCurrentModuleStates() {
+    public SwerveModuleState[] getCurrentModuleStates() { // utills
         SwerveModuleState[] sModuleStates = new SwerveModuleState[4];
-        //TO DO:
+        // TO DO:
         return sModuleStates;
 
-        
     }
 
-
-    
-
-
-    public double getJyroPosition (PigeonIMU gyro) {
+    public double getJyroPosition() {
         return gyro.getFusedHeading();
     }
 
-    public Rotation2d getRotation2d(double angle) {
-        return new Rotation2d(angle);
+    public Rotation2d getRotation2d() {
+        return Rotation2d.fromDegrees(getJyroPosition());
     }
 
+    public void setModules(SwerveModuleState[] sms) { //utils
 
-    public void setModules (SwerveModuleState[] sms) {
-        //TO DO:
-
-    }
-
-    public Pose2d getPose2d() { //TO DO:
-        return new Pose2d();
-
-    }
-
-    public Field2d getfield2d() { //TO DO:
-        return new Field2d();
     }
 
     
 
 
     @Override
-    public void periodic() {  
-        SwerveModuleState[] sms = getCurrentModuleStates();
-        //TO DO: update odometry
+    public void periodic() {
         
+        SwerveModuleState[] sms = getCurrentModuleStates();
+        // TO DO: update odometry
+
     }
-
-    
-    
-    
-
-    
-
-
 
 }

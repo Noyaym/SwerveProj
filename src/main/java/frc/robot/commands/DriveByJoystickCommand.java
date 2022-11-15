@@ -12,20 +12,18 @@ import frc.robot.subsystems.Chassis.Utils;
 public class DriveByJoystickCommand extends CommandBase {
 
     private Chassis chassis;
-    private Utils util;
 
-    public DriveByJoystickCommand(Chassis ch, Utils util) {
+    public DriveByJoystickCommand(Chassis ch) {
         this.chassis = ch;
-        this.util = util;
         addRequirements(chassis);
     }
 
     @Override
     public void execute() {
-        double vx = util.getJoystickX(RobotContainer.getJoystickXY());
-        double vy = util.getJoystickY(RobotContainer.getJoystickXY());
-        double ang = util.getJoystickAngle(RobotContainer.getJoystickDirection());
-        SwerveModuleState[] sms = util.getSwerveState(vx, vy, ang);
+        double vx = Utils.getJoystickX(RobotContainer.getJoystickXY());
+        double vy = Utils.getJoystickY(RobotContainer.getJoystickXY());
+        double ang = Utils.getJoystickAngle(RobotContainer.getJoystickDirection());
+        SwerveModuleState[] sms = Utils.getSwerveState(vx, vy, ang);
         chassis.setModules(sms);
     }
     

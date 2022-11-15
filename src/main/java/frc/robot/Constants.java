@@ -24,8 +24,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
+    
+    public static final int NUMBER_OF_WHEELS = 3;
     public final class ModuleConst {
+
 
         public static final int FRONT_LEFT_MOVE_MOTOR_ID = 2;
         public static final int FRONT_LEFT_TURN_MOTOR_ID = 1;
@@ -85,21 +87,21 @@ public final class Constants {
     
     public final static class kinematics {
         // Locations for the swerve drive modules relative to the robot center.
-        public static final double FRONT_RIGHT_LOCATION_X = 0;
-        public static final double FRONT_RIGHT_LOCATION_Y = 0;
+        public static final double FRONT_RIGHT_LOCATION_X = 0.262;
+        public static final double FRONT_RIGHT_LOCATION_Y = 0.307;
         
-        public static final double FRONT_LEFT_LOCATION_X = 0;
-        public static final double FRONT_LEFT_LOCATION_Y = 0;
+        // public static final double FRONT_LEFT_LOCATION_X = 0;
+        // public static final double FRONT_LEFT_LOCATION_Y = 0;
         
-        public static final double BACK_LEFT_LOCATION_X = 0;
-        public static final double BACK_LEFT_LOCATION_Y = 0;
+        public static final double BACK_LEFT_LOCATION_X = -0.262;
+        public static final double BACK_LEFT_LOCATION_Y = -0.307;
         
-        public static final double BACK_RIGHT_LOCATION_X = 0;
-        public static final double BACK_RIGHT_LOCATION_Y = 0;
+        public static final double BACK_RIGHT_LOCATION_X = 0.262;
+        public static final double BACK_RIGHT_LOCATION_Y = -0.307;
         
         // define modules location
-        public static final Translation2d FRONT_LEFT_LOCATION = new Translation2d(FRONT_LEFT_LOCATION_X,
-        FRONT_LEFT_LOCATION_Y);
+        // public static final Translation2d FRONT_LEFT_LOCATION = new Translation2d(FRONT_LEFT_LOCATION_X,
+        // FRONT_LEFT_LOCATION_Y);
         public static final Translation2d BACK_LEFT_LOCATION = new Translation2d(BACK_LEFT_LOCATION_X,
         BACK_LEFT_LOCATION_Y);
         public static final Translation2d FRONT_RIGHT_LOCATION = new Translation2d(FRONT_RIGHT_LOCATION_X,
@@ -108,7 +110,7 @@ public final class Constants {
         BACK_RIGHT_LOCATION_Y);
         
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
-            FRONT_LEFT_LOCATION,
+            // FRONT_LEFT_LOCATION,
             FRONT_RIGHT_LOCATION,
             BACK_LEFT_LOCATION,
             BACK_RIGHT_LOCATION);

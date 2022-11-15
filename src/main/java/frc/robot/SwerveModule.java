@@ -19,7 +19,7 @@ public class SwerveModule implements Sendable {
     private final TalonFX mAngle;
     private final CANCoder encoder;
     private final SimpleMotorFeedforward ff;
-    private double offset;
+    private double offset;// you need to get it frpm some where
 
     public SwerveModule(boolean isC, int vel, int angle, int CAN) {
         this.mVel = new TalonFX(vel);
