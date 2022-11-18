@@ -16,17 +16,19 @@ import frc.robot.SwerveModule;
 
 public class Utils {
     // TODO: add kinemati, field, pose
-    private PIDController steerPid;
-    private Field2d field;
+    //private PIDController steerPid; //what is this PID used for?
+    
+    private static PIDController PIDangle2radPerSec;
 
     public Utils()
     {
-        steerPid.setP(Constants.ModuleConst.mAngle_Kp);
-        steerPid.setI(Constants.ModuleConst.mAngle_Ki);
-        steerPid.setD(Constants.ModuleConst.mAngle_Kd);
-        field = new Field2d();
+        //steerPid.setP(Constants.ModuleConst.mAngle_Kp);
+        //steerPid.setI(Constants.ModuleConst.mAngle_Ki);
+        //steerPid.setD(Constants.ModuleConst.mAngle_Kd);
+        PIDangle2radPerSec = new PIDController(Constants.ChassiConst.a2r_Kp, Constants.ChassiConst.a2r_Ki,
+        Constants.ChassiConst.a2r_Kd);
         // odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, get()); // TODO find a source for
-                                                                                           // rotation2d or just use the odometry from chassis
+         //what is this?                                                                                  // rotation2d or just use the odometry from chassis
     }
 
     public static double getJoystickX(Joystick joystick) {
@@ -66,37 +68,35 @@ public class Utils {
     }
 
     public static SwerveModuleState[] getSwerveState(double vx, double vy, double desiredAngle) {
-        // TODO: pid of desired angle to radians per sec
+        double dif = desiredAngle - getGyroPosition(RobotContainer.getGyro());
+        double radPerSec = PIDangle2radPerSec.calculate(dif);
 
-        double radiansPerSec = 0;
-        return getModulesOptimaze(vx, vy, radiansPerSec, new Rotation2d());
+        return getModulesOptimize(vx, vy, radPerSec, new Rotation2d());
     }
 
     public static SwerveModuleState[] getModuleStates(double vx, double vy, double radPerSec, Rotation2d angle) {
-        SwerveModuleState[] sModuleStates = new SwerveModuleState[Constants.NUMBER_OF_WHEELS];
-
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, radPerSec, angle);
-
-        sModuleStates = Constants.kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(speeds);
+        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, radPerSec, angle);
+        SwerveModuleState[] sModuleStates = Constants.kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
         return sModuleStates;
     }
 
     // optimazes the SwerveModuleStates
-    public static SwerveModuleState[] getModulesOptimaze(double vx, double vy, double radPerSec, Rotation2d angle) {
+    public static SwerveModuleState[] getModulesOptimize(double vx, double vy, double radPerSec, Rotation2d angle) {
 
         SwerveModuleState[] sModuleStates = getModuleStates(vx, vy, radPerSec, angle);
         SwerveModuleState[] sModuleStatesOptimaze = new SwerveModuleState[sModuleStates.length];
 
         for (int i = 0; i < sModuleStates.length; i++) {
 
-            sModuleStatesOptimaze[i] = SwerveModuleState.optimize(sModuleStates[i], angle);
+            sModuleStatesOptimaze[i] = SwerveModuleState.optimize(sModuleStates[i], angle); //TODO: this is not true. look at the function parameters.
         }
 
         // TODO check
+        //what is check?
         return sModuleStatesOptimaze;
     }
 
-    public double getJyroPosition(PigeonIMU gyro) {
+    public static double getGyroPosition(PigeonIMU gyro) {
         return gyro.getFusedHeading();
     }
 
@@ -104,17 +104,6 @@ public class Utils {
         return new Rotation2d(angle);
     }
     
-
-
-    // get the state
-    public static SwerveModuleState[] getStates(SwerveModule [] swerveModules) {
-        SwerveModuleState[] states = new SwerveModuleState[4];
-        for(int i = 0; i < swerveModules.length; i++) {
-            states[i] = swerveModules[i].getState();
-        }
-        return states;
-    }
-
 
 
 

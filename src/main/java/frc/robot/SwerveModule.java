@@ -2,13 +2,13 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.CAN;
@@ -20,7 +20,7 @@ public class SwerveModule implements Sendable {
     private final TalonFX mAngle;
     private final CANCoder encoder;
     private final SimpleMotorFeedforward ff;
-    private double offset;// you need to get it frpm some where
+    private double offset;
 
     public SwerveModule(boolean isC, int vel, int angle, int CAN) {
         this.mVel = new TalonFX(vel);
@@ -58,16 +58,6 @@ public class SwerveModule implements Sendable {
         return offset;
     }
 
-    
-    public SwerveModuleState getState(){
-        double velocity = getVel();
-        Rotation2d angle = getRotation2d();
-
-
-        return new SwerveModuleState(velocity, angle);
-    }
-
-
     public void setVel(double velocity) {
         mVel.set(ControlMode.Velocity, velocity * Constants.ModuleConst.PULSE_PER_METER / 10,
                 DemandType.ArbitraryFeedForward, ff.calculate(velocity));
@@ -102,10 +92,8 @@ public class SwerveModule implements Sendable {
     }
 
     public void setAngle(double angle) {
-        // setReversed(angle);
         mAngle.set(ControlMode.Position, convertAngle2Pulse(angle),
                 DemandType.ArbitraryFeedForward, calcFF());
-        SmartDashboard.putNumber("angle error", mAngle.getClosedLoopError());
     }
 
     public void setPowerAngle(double power) {
@@ -116,9 +104,15 @@ public class SwerveModule implements Sendable {
         mVel.set(ControlMode.PercentOutput, power);
     }
 
-    public Rotation2d getRotation2d() {
-        return Rotation2d.fromDegrees(getAngle());
+    public void setNeutraleModeSteerMotor(boolean isBrake) {
+        if (isBrake) {
+            mAngle.setNeutralMode(NeutralMode.Brake);
+        }
+        else {
+            mAngle.setNeutralMode(NeutralMode.Coast);
+        }
     }
+
 
     public TalonFX getMoveMotor() {
         return mVel;
@@ -143,6 +137,5 @@ public class SwerveModule implements Sendable {
         offset = encoder.getAbsolutePosition();
         mAngle.setSelectedSensorPosition(0);
     }
-    
 
 }

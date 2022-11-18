@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Chassis;
 
+import java.io.ObjectInputStream.GetField;
 import java.security.PublicKey;
 
 import com.ctre.phoenix.Util;
@@ -26,14 +27,14 @@ import frc.robot.Constants;
 public class Chassis extends SubsystemBase {
     private final Field2d field;
     private final SwerveModule[] swerveModules;
-    private final SwerveModule front_right, back_right,  back_left; /*front_left,;*/
-    private final PigeonIMU gyro;
+    private final SwerveModule front_right, back_right,  back_left, front_left;
     private final SwerveDriveOdometry odometry;
+    
 
     public Chassis() {
         this.field = new Field2d();
 
-        gyro = new PigeonIMU(Constants.ChassiConst.jyro_PORT_NUM);
+        //gyro should be defined in robot container
         odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, getRotation2d());
 
         swerveModules = new SwerveModule[Constants.NUMBER_OF_WHEELS];
@@ -44,9 +45,9 @@ public class Chassis extends SubsystemBase {
         back_right = new SwerveModule(false, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
-        // front_left = new SwerveModule(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
-        //         Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-        //         Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        front_left = new SwerveModule(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
+               Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
+                 Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
         back_left = new SwerveModule(false, Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_CANCODER_ID);
@@ -54,27 +55,35 @@ public class Chassis extends SubsystemBase {
         swerveModules[0] = front_right;
         swerveModules[1] = back_left;
         swerveModules[2] = back_right;
-        // swerveModules[3] = front_left;
+        swerveModules[3] = front_left;
+
+        SmartDashboard.putData("Field", getField());
+
+        
 
     }
 
-    public SwerveModuleState[] getCurrentModuleStates() { // utills
+    public SwerveModuleState[] getCurrentModuleStates() { // utills why in utils? this is suppose to be in subsystem
         SwerveModuleState[] sModuleStates = new SwerveModuleState[4];
-        // TO DO:
+        //TODO:
         return sModuleStates;
 
     }
 
-    public double getJyroPosition() {
-        return gyro.getFusedHeading();
+    public SwerveModule[] getThisSwerveModules() {
+        return swerveModules;
+    }
+
+    public double getGyroPosition() {
+        return RobotContainer.getGyro().getFusedHeading();
     }
 
     public Rotation2d getRotation2d() {
-        return Rotation2d.fromDegrees(getJyroPosition());
+        return Rotation2d.fromDegrees(getGyroPosition());
     }
 
-    public void setModules(SwerveModuleState[] sms) { //utils
-
+    public void setModules(SwerveModuleState[] sms) { //again, not in utils
+//TODO
     }
 
 
@@ -82,30 +91,55 @@ public class Chassis extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
-    public void resetPose(Pose2d pose){
+    public void resetPose(Pose2d pose){ //what does this do?
         odometry.resetPosition(pose, getRotation2d());
     }
 
     
-    public Pose2d odometryUpdate(SwerveModuleState[] SwerveModulesState) {
-        return odometry.update(getRotation2d(), SwerveModulesState);
-    }
+    public void odometryUpdate(SwerveModuleState[] SwerveModulesState) {
+        odometry.update(getRotation2d(), SwerveModulesState);
+    }  
 
-    public void getField(Pose2d pose){
+    public void setField(Pose2d pose){
         field.setRobotPose(pose);
     }
+
+    public Field2d getField() {
+        return field;
+    }
+
+    public void setNeutralModeAngle(boolean isBrake) {
+        for (int i=0; i<swerveModules.length; i++) {
+            swerveModules[i].setNeutraleModeSteerMotor(isBrake);
+        }
+    }
+
+    public void setPowerAngle(double power) {
+        for (int i=0; i<swerveModules.length; i++) {
+            swerveModules[i].setPowerAngle(power);
+        }
+    }
+
+    public void setAngle(double angle) {
+        for (int i=0; i<swerveModules.length; i++) {
+            swerveModules[i].setAngle(angle);
+        }
+    }
+
+    public void setPowerVelocity(double power) {
+        for (int i=0; i<swerveModules.length; i++) {
+            swerveModules[i].setPowerVelocity(power);
+        }
+    }
+
+
     
     @Override
-    public void periodic() {
-        Pose2d pose = odometryUpdate(Utils.getStates(swerveModules));
-        // TODO field (odometry)
-        SmartDashboard.putData("Reset pose", new InstantCommand(() -> {
-            resetPose(getPose());
-        }, this));
+    public void periodic() { //updating odometry is not a button command
+       SwerveModuleState[] sms = getCurrentModuleStates();
+       odometryUpdate(sms);
+       setField(getPose());
 
-
-        SwerveModuleState[] sms = getCurrentModuleStates();
-        // TO DO: update odometry
 
     }
 
