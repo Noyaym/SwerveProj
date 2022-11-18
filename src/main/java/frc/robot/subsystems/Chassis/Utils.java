@@ -16,19 +16,17 @@ import frc.robot.SwerveModule;
 
 public class Utils {
     // TODO: add kinemati, field, pose
-    //private PIDController steerPid; //what is this PID used for?
     
     private static PIDController PIDangle2radPerSec;
 
     public Utils()
     {
-        //steerPid.setP(Constants.ModuleConst.mAngle_Kp);
-        //steerPid.setI(Constants.ModuleConst.mAngle_Ki);
-        //steerPid.setD(Constants.ModuleConst.mAngle_Kd);
+        
         PIDangle2radPerSec = new PIDController(Constants.ChassiConst.a2r_Kp, Constants.ChassiConst.a2r_Ki,
         Constants.ChassiConst.a2r_Kd);
         // odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, get()); // TODO find a source for
-         //what is this?                                                                                  // rotation2d or just use the odometry from chassis
+         //what is this?  
+         // you can delete this when you see this                                                                               // rotation2d or just use the odometry from chassis
     }
 
     public static double getJoystickX(Joystick joystick) {
@@ -70,29 +68,34 @@ public class Utils {
     public static SwerveModuleState[] getSwerveState(double vx, double vy, double desiredAngle) {
         double dif = desiredAngle - getGyroPosition(RobotContainer.getGyro());
         double radPerSec = PIDangle2radPerSec.calculate(dif);
+        Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.getGyro())); // i am not sure about it but i think this is how its should be done (with the current angle)
 
-        return getModulesOptimize(vx, vy, radPerSec, new Rotation2d());
+        return getModulesOptimize(vx, vy, radPerSec, currentAngle);
     }
 
-    public static SwerveModuleState[] getModuleStates(double vx, double vy, double radPerSec, Rotation2d angle) {
-        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, radPerSec, angle);
+    public static SwerveModuleState[] getModuleStates(double vx, double vy, double radPerSec, Rotation2d currentAngle) {
+        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, radPerSec, currentAngle);
         SwerveModuleState[] sModuleStates = Constants.kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
+
         return sModuleStates;
     }
 
     // optimazes the SwerveModuleStates
-    public static SwerveModuleState[] getModulesOptimize(double vx, double vy, double radPerSec, Rotation2d angle) {
+    public static SwerveModuleState[] getModulesOptimize(double vx, double vy, double radPerSec, Rotation2d currentAngle) {
 
-        SwerveModuleState[] sModuleStates = getModuleStates(vx, vy, radPerSec, angle);
+        SwerveModuleState[] sModuleStates = getModuleStates(vx, vy, radPerSec, currentAngle);
         SwerveModuleState[] sModuleStatesOptimaze = new SwerveModuleState[sModuleStates.length];
 
         for (int i = 0; i < sModuleStates.length; i++) {
 
-            sModuleStatesOptimaze[i] = SwerveModuleState.optimize(sModuleStates[i], angle); //TODO: this is not true. look at the function parameters.
+            sModuleStatesOptimaze[i] = SwerveModuleState.optimize(sModuleStates[i], currentAngle); //TODO: this is not true. look at the function parameters.
+                                                                                                    // i think it ok now
+                                                                                                    //TODO if you want you can look at the optimize func
         }
 
         // TODO check
         //what is check?
+        //just check like you did lol
         return sModuleStatesOptimaze;
     }
 
