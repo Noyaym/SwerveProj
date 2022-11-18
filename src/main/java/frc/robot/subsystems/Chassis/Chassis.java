@@ -61,8 +61,7 @@ public class Chassis extends SubsystemBase {
 
     }
 
-    public SwerveModuleState[] getCurrentModuleStates() { // utills why in utils? this is suppose to be in subsystem
-                                                         //enjoy :D
+    public SwerveModuleState[] getCurrentModuleStates() {
         SwerveModuleState[] sModuleStates = new SwerveModuleState[Constants.NUMBER_OF_WHEELS];
         for (int i = 0; i < sModuleStates.length; i++) {
             sModuleStates[i] = swerveModules[i].getState();
@@ -84,9 +83,7 @@ public class Chassis extends SubsystemBase {
         return Rotation2d.fromDegrees(getGyroPosition());
     }
 
-    public void setModules(SwerveModuleState[] SwerveModulesState) { // again, not in utils
-        // i will look it up
-        // if you want to do it you can just use comments
+    public void setModules(SwerveModuleState[] SwerveModulesState) {
         for (int i = 0; i < SwerveModulesState.length; i++) {
             // SwerveModulesState[i].speedMetersPerSeconds
         }
@@ -96,9 +93,7 @@ public class Chassis extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
-    public void resetPose(Pose2d pose) { // what does this do?
-                                         // TODO reset the field, I added a button that did that but i think you deleted
-                                         // him :(
+    public void resetPose(Pose2d pose) { 
         odometry.resetPosition(pose, getRotation2d());
     }
 
@@ -139,7 +134,7 @@ public class Chassis extends SubsystemBase {
     }
 
     @Override
-    public void periodic() { // updating odometry is not a button command
+    public void periodic() {
         SwerveModuleState[] sms = getCurrentModuleStates();
         odometryUpdate(sms);
         setField(getPose());

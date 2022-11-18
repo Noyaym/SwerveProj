@@ -15,7 +15,6 @@ import frc.robot.RobotContainer;
 import frc.robot.SwerveModule;
 
 public class Utils {
-    // TODO: add kinemati, field, pose
     
     private static PIDController PIDangle2radPerSec;
 
@@ -24,9 +23,6 @@ public class Utils {
         
         PIDangle2radPerSec = new PIDController(Constants.ChassiConst.a2r_Kp, Constants.ChassiConst.a2r_Ki,
         Constants.ChassiConst.a2r_Kd);
-        // odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, get()); // TODO find a source for
-         //what is this?  
-         // you can delete this when you see this                                                                               // rotation2d or just use the odometry from chassis
     }
 
     public static double getJoystickX(Joystick joystick) {
@@ -80,23 +76,17 @@ public class Utils {
         return sModuleStates;
     }
 
-    // optimazes the SwerveModuleStates
     public static SwerveModuleState[] getModulesOptimize(double vx, double vy, double radPerSec, Rotation2d currentAngle) {
 
         SwerveModuleState[] sModuleStates = getModuleStates(vx, vy, radPerSec, currentAngle);
-        SwerveModuleState[] sModuleStatesOptimaze = new SwerveModuleState[sModuleStates.length];
+        SwerveModuleState[] sModuleStatesOptimized = new SwerveModuleState[sModuleStates.length];
 
         for (int i = 0; i < sModuleStates.length; i++) {
 
-            sModuleStatesOptimaze[i] = SwerveModuleState.optimize(sModuleStates[i], currentAngle); //TODO: this is not true. look at the function parameters.
-                                                                                                    // i think it ok now
-                                                                                                    //TODO if you want you can look at the optimize func
+            sModuleStatesOptimized[i] = SwerveModuleState.optimize(sModuleStates[i], currentAngle);
         }
 
-        // TODO check
-        //what is check?
-        //just check like you did lol
-        return sModuleStatesOptimaze;
+        return sModuleStatesOptimized;
     }
 
     public static double getGyroPosition(PigeonIMU gyro) {
