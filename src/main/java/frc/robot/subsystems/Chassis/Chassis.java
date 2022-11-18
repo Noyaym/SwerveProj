@@ -12,10 +12,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveModule;
 import frc.robot.RobotContainer;
@@ -75,12 +77,33 @@ public class Chassis extends SubsystemBase {
 
     }
 
+
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
+    }
+
+    public void resetPose(Pose2d pose){
+        odometry.resetPosition(pose, getRotation2d());
+    }
+
     
+    public Pose2d odometryUpdate(SwerveModuleState[] SwerveModulesState) {
+        return odometry.update(getRotation2d(), SwerveModulesState);
+    }
 
-
+    public void getField(Pose2d pose){
+        field.setRobotPose(pose);
+    }
+    
     @Override
     public void periodic() {
-        
+        Pose2d pose = odometryUpdate(Utils.getStates(swerveModules));
+        // TODO field (odometry)
+        SmartDashboard.putData("Reset pose", new InstantCommand(() -> {
+            resetPose(getPose());
+        }, this));
+
+
         SwerveModuleState[] sms = getCurrentModuleStates();
         // TO DO: update odometry
 

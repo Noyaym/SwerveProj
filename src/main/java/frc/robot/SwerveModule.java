@@ -8,6 +8,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.CAN;
@@ -57,6 +58,16 @@ public class SwerveModule implements Sendable {
         return offset;
     }
 
+    
+    public SwerveModuleState getState(){
+        double velocity = getVel();
+        Rotation2d angle = getRotation2d();
+
+
+        return new SwerveModuleState(velocity, angle);
+    }
+
+
     public void setVel(double velocity) {
         mVel.set(ControlMode.Velocity, velocity * Constants.ModuleConst.PULSE_PER_METER / 10,
                 DemandType.ArbitraryFeedForward, ff.calculate(velocity));
@@ -105,6 +116,9 @@ public class SwerveModule implements Sendable {
         mVel.set(ControlMode.PercentOutput, power);
     }
 
+    public Rotation2d getRotation2d() {
+        return Rotation2d.fromDegrees(getAngle());
+    }
 
     public TalonFX getMoveMotor() {
         return mVel;
@@ -129,5 +143,6 @@ public class SwerveModule implements Sendable {
         offset = encoder.getAbsolutePosition();
         mAngle.setSelectedSensorPosition(0);
     }
+    
 
 }

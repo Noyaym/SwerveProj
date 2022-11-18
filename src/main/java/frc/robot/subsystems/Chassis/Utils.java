@@ -2,6 +2,7 @@ package frc.robot.subsystems.Chassis;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -11,14 +12,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.SwerveModule;
 
 public class Utils {
     // TODO: add kinemati, field, pose
-    // private SwerveDriveOdometry odometry;
+    private PIDController steerPid;
     private Field2d field;
 
     public Utils()
     {
+        steerPid.setP(Constants.ModuleConst.mAngle_Kp);
+        steerPid.setI(Constants.ModuleConst.mAngle_Ki);
+        steerPid.setD(Constants.ModuleConst.mAngle_Kd);
         field = new Field2d();
         // odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, get()); // TODO find a source for
                                                                                            // rotation2d or just use the odometry from chassis
@@ -98,13 +103,19 @@ public class Utils {
     public Rotation2d getRotation2d(double angle) {
         return new Rotation2d(angle);
     }
+    
 
-    public Pose2d getPose2d(SwerveModuleState[] SwerveModulesState, Rotation2d currentAngle, SwerveDriveOdometry odometry) {
-        return odometry.update(currentAngle, SwerveModulesState);
+
+    // get the state
+    public static SwerveModuleState[] getStates(SwerveModule [] swerveModules) {
+        SwerveModuleState[] states = new SwerveModuleState[4];
+        for(int i = 0; i < swerveModules.length; i++) {
+            states[i] = swerveModules[i].getState();
+        }
+        return states;
     }
 
-    public void getField(Pose2d pose){
-        field.setRobotPose(pose);
-    }
+
+
 
 }
