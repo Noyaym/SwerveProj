@@ -25,7 +25,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
  */
 public final class Constants {
     
-    public static final int NUMBER_OF_WHEELS = 3;
+    public static final int NUMBER_OF_WHEELS = 4;
     public final class ModuleConst {
 
 

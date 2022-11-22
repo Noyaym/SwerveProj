@@ -41,11 +41,6 @@ public class ModuleOne extends SubsystemBase {
         return module.getOffset();
     }
 
-    public boolean isReverse() {
-        return module.isReversed(getAngle());
-
-    }
-
     @Override
     public void initSendable(SendableBuilder builder) {
         SmartDashboard.putNumber("target vel", 0);
@@ -68,7 +63,6 @@ public class ModuleOne extends SubsystemBase {
         builder.addDoubleProperty("angle", this::getAngle, null);
 
         builder.addDoubleProperty("offset", this::getOffset, null);
-        builder.addBooleanProperty("is reversed", this::isReverse, null);
         builder.addDoubleProperty("motor position", this::getSelectedSensorPosition, null);
         // builder.addDoubleProperty("Error", module.getSeerMotor()::getClosedLoopError,
         // null);

@@ -27,7 +27,7 @@ import frc.robot.Constants;
 public class Chassis extends SubsystemBase {
     private final Field2d field;
     private final SwerveModule[] swerveModules;
-    private final SwerveModule front_right, back_right, back_left; // front_left;
+    private final SwerveModule front_right, back_right, back_left, front_left;
     private final SwerveDriveOdometry odometry;
 
     public Chassis() {
@@ -43,11 +43,11 @@ public class Chassis extends SubsystemBase {
         back_right = new SwerveModule(false, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
-        // front_left = new SwerveModule(false,
-        // Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID, // because we dont have 4
-                                                            // wheels we use only 3
-        // Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-        // Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        front_left = new SwerveModule(false,
+        Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID, 
+        Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
+        Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+
         back_left = new SwerveModule(false, Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_CANCODER_ID);
@@ -55,7 +55,7 @@ public class Chassis extends SubsystemBase {
         swerveModules[0] = front_right;
         swerveModules[1] = back_left;
         swerveModules[2] = back_right;
-        // swerveModules[3] = front_left; // samehere
+        swerveModules[3] = front_left; // samehere
 
         SmartDashboard.putData("Field", getField());
 
@@ -85,8 +85,24 @@ public class Chassis extends SubsystemBase {
 
     public void setModules(SwerveModuleState[] SwerveModulesState) {
         for (int i = 0; i < SwerveModulesState.length; i++) {
-            // SwerveModulesState[i].speedMetersPerSeconds
+            swerveModules[i].setAngle(SwerveModulesState[i].angle.getDegrees());
+            swerveModules[i].setVel(SwerveModulesState[i].speedMetersPerSecond);
+
         }
+    }
+
+    public SwerveModuleState[] getModulesOptimize(double vx, double vy, double radPerSec) {
+
+        SwerveModuleState[] sModuleStates = Utils.getSwerveState(vx, vy, radPerSec);
+        SwerveModuleState[] sModuleStatesOptimized = new SwerveModuleState[sModuleStates.length];
+
+        for (int i = 0; i < sModuleStates.length; i++) {
+
+            sModuleStatesOptimized[i] = SwerveModuleState.optimize(sModuleStates[i],
+            swerveModules[i].getAngleRotation2d());
+        }
+
+        return sModuleStatesOptimized;
     }
 
     public Pose2d getPose() {
