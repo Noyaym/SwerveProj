@@ -23,7 +23,7 @@ public class DriveByJoystickCommand extends CommandBase {
         double vx = Utils.getJoystickX(RobotContainer.joystickXY);
         double vy = Utils.getJoystickY(RobotContainer.joystickXY);
         double ang = Utils.getJoystickAngle(RobotContainer.joystickDirection);
-        SwerveModuleState[] sms = Utils.getSwerveState(vx, vy, ang);
+        SwerveModuleState[] sms = chassis.getModulesOptimize(vx, vy, ang);
         chassis.setModules(sms);
     }
     

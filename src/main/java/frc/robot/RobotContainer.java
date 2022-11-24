@@ -60,19 +60,7 @@ public class RobotContainer {
     return m_autoCommand;
   }
 
-  // Command findFeedForward = new InstantCommand(() -> chassis.setNeutralModeAngle(true), chassis)
-      // .andThen(new InstantCommand(() -> chassis.setAngle(0), chassis),
-          // new InstantCommand(() -> chassis.setPowerVelocity(0.2), chassis),
-          // new WaitCommand(2),
-          // new InstantCommand(() -> SmartDashboard.putNumber("Velocity power 1",
-              // chassis.getThisSwerveModules()[0].getVel()), chassis),
-          // new InstantCommand(() -> chassis.setPowerVelocity(0), chassis),
-          // new WaitCommand(2),
-          // new InstantCommand(() -> chassis.setPowerVelocity(0.6), chassis),
-          // new WaitCommand(2),
-          // new InstantCommand(() -> SmartDashboard.putNumber("Velocity power 2",
-              // chassis.getThisSwerveModules()[0].getVel()), chassis),
-          // new InstantCommand(() -> chassis.setNeutralModeAngle(false), chassis));
+  
 
 
 //Command tryYCommand = new InstantCommand(()-> chassis.setNeutralModeAngle(true), chassis);
@@ -93,12 +81,26 @@ public class RobotContainer {
   }
 
 
-  public static Joystick getJoystickXY() {
+  public Joystick getJoystickXY() {
     return joystickXY;
   }
 
-  public static Joystick getJoystickDirection() {
+  public Joystick getJoystickDirection() {
     return joystickDirection;
   }
+
+  Command findFeedForward = new InstantCommand(() -> chassis.setNeutralModeAngle(true), chassis)
+      .andThen(new InstantCommand(() -> chassis.setAngle(0), chassis),
+          new InstantCommand(() -> chassis.setPowerVelocity(0.2), chassis),
+          new WaitCommand(2),
+           new InstantCommand(() -> SmartDashboard.putNumber("Velocity power 1",
+               chassis.getThisSwerveModules()[0].getVel()), chassis),
+           new InstantCommand(() -> chassis.setPowerVelocity(0), chassis),
+          new WaitCommand(2),
+          new InstantCommand(() -> chassis.setPowerVelocity(0.6), chassis),
+          new WaitCommand(2),
+          new InstantCommand(() -> SmartDashboard.putNumber("Velocity power 2",
+          chassis.getThisSwerveModules()[0].getVel()), chassis),
+          new InstantCommand(() -> chassis.setNeutralModeAngle(false), chassis));
 
 }
