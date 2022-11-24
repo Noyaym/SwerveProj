@@ -18,10 +18,10 @@ public class ModuleOne extends SubsystemBase {
 
     public ModuleOne() {
 
-        module = new SwerveModule(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
-                Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-                Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
-        module.getMoveMotor().setInverted(Constants.ModuleConst.FRONT_LEFT_SET_INVERT_TYPE);
+        module = new SwerveModule(false, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
+                Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
+                Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
+        module.getMoveMotor().setInverted(Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
 
     }
 

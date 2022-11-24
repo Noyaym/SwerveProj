@@ -4,7 +4,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,9 +26,9 @@ public class SwerveModule implements Sendable {
     private double offset;
 
     public SwerveModule(boolean isC, int vel, int angle, int CAN) {
-        this.mVel = new TalonFX(vel);
-        this.mAngle = new TalonFX(angle);
-        this.encoder = new CANCoder(CAN);
+        this.mVel = new WPI_TalonFX(vel);
+        this.mAngle = new WPI_TalonFX(angle);
+        this.encoder = new WPI_CANCoder(CAN);
 
         mVel.configFactoryDefault();
         mAngle.configFactoryDefault();

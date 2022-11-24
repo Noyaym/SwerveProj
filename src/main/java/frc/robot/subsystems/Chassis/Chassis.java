@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -27,10 +28,12 @@ import frc.robot.Constants;
 public class Chassis extends SubsystemBase {
     private final Field2d field;
     private final SwerveModule[] swerveModules;
-    private final SwerveModule front_right, back_right, back_left; // front_left;
+    private final SwerveModule front_right, back_right, back_left, front_left;
     private final SwerveDriveOdometry odometry;
+    private PigeonIMU gyro;
 
-    public Chassis() {
+    public Chassis(PigeonIMU gyro) {
+        this.gyro = gyro;
         this.field = new Field2d();
 
         odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, getRotation2d());
@@ -43,11 +46,10 @@ public class Chassis extends SubsystemBase {
         back_right = new SwerveModule(false, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
-        // front_left = new SwerveModule(false,
-        // Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID, // because we dont have 4
-                                                            // wheels we use only 3
-        // Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-        // Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        front_left = new SwerveModule(false,
+                Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID, 
+                Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
+                Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
         back_left = new SwerveModule(false, Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_CANCODER_ID);
@@ -55,7 +57,7 @@ public class Chassis extends SubsystemBase {
         swerveModules[0] = front_right;
         swerveModules[1] = back_left;
         swerveModules[2] = back_right;
-        // swerveModules[3] = front_left; // samehere
+        swerveModules[3] = front_left;
 
         SmartDashboard.putData("Field", getField());
 
@@ -76,7 +78,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public double getGyroPosition() {
-        return RobotContainer.getGyro().getFusedHeading();
+        return gyro.getFusedHeading();
     }
 
     public Rotation2d getRotation2d() {

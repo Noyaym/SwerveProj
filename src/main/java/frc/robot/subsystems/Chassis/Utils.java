@@ -62,9 +62,9 @@ public class Utils {
     }
 
     public static SwerveModuleState[] getSwerveState(double vx, double vy, double desiredAngle) {
-        double dif = desiredAngle - getGyroPosition(RobotContainer.getGyro());
+        double dif = desiredAngle - getGyroPosition(RobotContainer.gyro);
         double radPerSec = PIDangle2radPerSec.calculate(dif);
-        Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.getGyro())); // i am not sure about it but i think this is how its should be done (with the current angle)
+        Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.gyro)); // i am not sure about it but i think this is how its should be done (with the current angle)
 
         return getModulesOptimize(vx, vy, radPerSec, currentAngle);
     }

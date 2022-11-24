@@ -25,27 +25,29 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
  */
 public final class Constants {
     
-    public static final int NUMBER_OF_WHEELS = 3;
+    public static final int NUMBER_OF_WHEELS = 4;
     public final class ModuleConst {
 
 
-        public static final int FRONT_LEFT_MOVE_MOTOR_ID = 2;
-        public static final int FRONT_LEFT_TURN_MOTOR_ID = 1;
-        public static final int FRONT_LEFT_CANCODER_ID = 11;
+        public static final int FRONT_LEFT_MOVE_MOTOR_ID = 26;
+        public static final int FRONT_LEFT_TURN_MOTOR_ID = 29;
+        public static final int FRONT_LEFT_CANCODER_ID = 31;
         public static final boolean FRONT_LEFT_SET_INVERT_TYPE = true;
 
 
-        public static final int FRONT_RIGHT_MOVE_MOTOR_ID = -1;
-        public static final int FRONT_RIGHT_TURN_MOTOR_ID = -1;
-        public static final int FRONT_RIGHT_CANCODER_ID = -1;
+        public static final int FRONT_RIGHT_MOVE_MOTOR_ID = 27;
+        public static final int FRONT_RIGHT_TURN_MOTOR_ID = 30;
+        public static final int FRONT_RIGHT_CANCODER_ID = 28;
+        public static final boolean FRONT_RIGHT_SET_INVERT_TYPE = true;
 
-        public static final int BACK_LEFT_MOVE_MOTOR_ID = -1;
-        public static final int BACK_LEFT_TURN_MOTOR_ID = -1;
-        public static final int BACK_LEFT_CANCODER_ID = -1;
+        public static final int BACK_LEFT_MOVE_MOTOR_ID = 25;
+        public static final int BACK_LEFT_TURN_MOTOR_ID = 23;
+        public static final int BACK_LEFT_CANCODER_ID = 21;
 
-        public static final int BACK_RIGHT_MOVE_MOTOR_ID = -1;
-        public static final int BACK_RIGHT_TURN_MOTOR_ID = -1;
-        public static final int BACK_RIGHT_CANCODER_ID = -1;
+        public static final int BACK_RIGHT_MOVE_MOTOR_ID = 24;
+        public static final int BACK_RIGHT_TURN_MOTOR_ID = 22;
+        public static final int BACK_RIGHT_CANCODER_ID = 20;
+        public static final boolean BACK_RIGHT_SET_INVERT_TYPE = true;
 
         public static final double mVel_Kp = 0.0058;
         public static final double mVel_Ki = 0.0;
@@ -76,7 +78,7 @@ public final class Constants {
     }
 
     public final static class ChassiConst {
-        public static final int jyro_PORT_NUM = 0;
+        public static final int jyro_PORT_NUM = 14;
         public final static Translation2d[] wheelsMeters = new Translation2d[] {};
         public static final double a2r_Kp = 0;
         public static final double a2r_Ki = 0;

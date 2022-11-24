@@ -9,19 +9,17 @@ import frc.robot.subsystems.Chassis.Utils;
 public class ModuleByJoystick extends CommandBase {
 
     private SwerveModule module;
-    private Utils util;
     private Joystick joystick;
 
-    public ModuleByJoystick(SwerveModule module, Utils util) {
+    public ModuleByJoystick(SwerveModule module) {
         this.module = module;
-        this.util = util;
-        joystick = RobotContainer.getJoystickXY();
+        joystick = RobotContainer.joystickXY;
     }
 
     @Override
     public void execute() {
-        double powerSpeed = util.getJoystickX(joystick);
-        double powerAngle = util.getJoystickY(joystick);
+        double powerSpeed = Utils.getJoystickX(joystick);
+        double powerAngle = Utils.getJoystickY(joystick);
 
         module.setPowerVelocity(powerSpeed);
         module.setPowerAngle(powerAngle);
