@@ -15,14 +15,13 @@ import frc.robot.RobotContainer;
 import frc.robot.SwerveModule;
 
 public class Utils {
-    
+
     private static PIDController PIDangle2radPerSec;
 
-    public Utils()
-    {
-        
+    public Utils() {
+
         PIDangle2radPerSec = new PIDController(Constants.ChassiConst.a2r_Kp, Constants.ChassiConst.a2r_Ki,
-        Constants.ChassiConst.a2r_Kd);
+                Constants.ChassiConst.a2r_Kd);
     }
 
     public static double getJoystickX(Joystick joystick) {
@@ -66,7 +65,8 @@ public class Utils {
         double radPerSec = PIDangle2radPerSec.calculate(dif);
         Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.gyro)); // i am not sure about it but i think this is how its should be done (with the current angle)
 
-        return getModulesOptimize(vx, vy, radPerSec, currentAngle);
+
+        return getModuleStates(vx, vy, radPerSec, currentAngle);
     }
 
     public static SwerveModuleState[] getModuleStates(double vx, double vy, double radPerSec, Rotation2d currentAngle) {
@@ -76,18 +76,7 @@ public class Utils {
         return sModuleStates;
     }
 
-    public static SwerveModuleState[] getModulesOptimize(double vx, double vy, double radPerSec, Rotation2d currentAngle) {
-
-        SwerveModuleState[] sModuleStates = getModuleStates(vx, vy, radPerSec, currentAngle);
-        SwerveModuleState[] sModuleStatesOptimized = new SwerveModuleState[sModuleStates.length];
-
-        for (int i = 0; i < sModuleStates.length; i++) {
-
-            sModuleStatesOptimized[i] = SwerveModuleState.optimize(sModuleStates[i], currentAngle);
-        }
-
-        return sModuleStatesOptimized;
-    }
+    
 
     public static double getGyroPosition(PigeonIMU gyro) {
         return gyro.getFusedHeading();
@@ -96,8 +85,5 @@ public class Utils {
     public Rotation2d getRotation2d(double angle) {
         return new Rotation2d(angle);
     }
-    
-
-
 
 }

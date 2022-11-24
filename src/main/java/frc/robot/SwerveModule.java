@@ -53,6 +53,12 @@ public class SwerveModule implements Sendable {
         return encoder.getAbsolutePosition() - offset;
     }
 
+    public Rotation2d getAngleRotation2d() {
+        return new Rotation2d(encoder.getAbsolutePosition() - offset);
+    }
+
+
+
     public double getVel() {
         return mVel.getSelectedSensorVelocity() / Constants.ModuleConst.PULSE_PER_METER * 10;
     }
@@ -66,21 +72,7 @@ public class SwerveModule implements Sendable {
                 DemandType.ArbitraryFeedForward, ff.calculate(velocity));
     }
 
-    public void setReversed(double angle) {
-        if (angle - getAngle() > 0) {
-            mAngle.setInverted(true);
-        } else {
-            mAngle.setInverted(false);
-        }
-    }
 
-    public boolean isReversed(double angle) {
-        if (angle - getAngle() > 0) {
-            return true;
-        }
-        return false;
-
-    }
 
     public double convertAngle2Pulse(double angle) {
         return angle * Constants.ModuleConst.PULSE_PER_ANGLE;

@@ -47,9 +47,9 @@ public class Chassis extends SubsystemBase {
                 Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
         front_left = new SwerveModule(false,
-                Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID, 
-                Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-                Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
+        Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
+        Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
         back_left = new SwerveModule(false, Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_CANCODER_ID);
@@ -78,7 +78,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public double getGyroPosition() {
-        return gyro.getFusedHeading();
+        return RobotContainer.gyro.getFusedHeading();
     }
 
     public Rotation2d getRotation2d() {
@@ -87,7 +87,7 @@ public class Chassis extends SubsystemBase {
 
     public void setModules(SwerveModuleState[] SwerveModulesState) {
         for (int i = 0; i < SwerveModulesState.length; i++) {
-            // SwerveModulesState[i].speedMetersPerSeconds
+            
         }
     }
 

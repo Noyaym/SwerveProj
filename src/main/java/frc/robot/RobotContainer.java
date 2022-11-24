@@ -93,11 +93,11 @@ public class RobotContainer {
   }
 
 
-  public Joystick getJoystickXY() {
+  public static Joystick getJoystickXY() {
     return joystickXY;
   }
 
-  public Joystick getJoystickDirection() {
+  public static Joystick getJoystickDirection() {
     return joystickDirection;
   }
 
