@@ -13,10 +13,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -31,6 +34,8 @@ public class Chassis extends SubsystemBase {
     private final SwerveModule front_right, back_right, back_left, front_left;
     private final SwerveDriveOdometry odometry;
     private PigeonIMU gyro;
+    private ShuffleboardTab tab = Shuffleboard.getTab("chassis data");
+    private NetworkTableEntry fieldEntry = tab.add("Field", 0).getEntry();
 
     public Chassis(PigeonIMU gyro) {
         this.gyro = gyro;
@@ -58,8 +63,6 @@ public class Chassis extends SubsystemBase {
         swerveModules[1] = back_left;
         swerveModules[2] = back_right;
         swerveModules[3] = front_left;
-
-        SmartDashboard.putData("Field", getField());
 
     }
 
@@ -156,6 +159,8 @@ public class Chassis extends SubsystemBase {
         SwerveModuleState[] sms = getCurrentModuleStates();
         odometryUpdate(sms);
         setField(getPose());
+        //SmartDashboard.putData("Field", getField());
+        fieldEntry.setValue(getField());        
 
     }
 
