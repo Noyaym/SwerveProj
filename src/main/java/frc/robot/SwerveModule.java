@@ -17,7 +17,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SwerveModule implements Sendable {
+public class SwerveModule {
 
     private final TalonFX mVel;
     private final TalonFX mAngle;
@@ -82,13 +82,13 @@ public class SwerveModule implements Sendable {
         return offset * Constants.ModuleConst.PULSE_PER_ANGLE;
     }
 
-    public double calcFF() {
-        return convertAngle2Pulse(10); // still not sure about that
+    public double calcFF(double angle) {
+        return Math.signum(angle-getAngle())*(10+getAngle())*Constants.ModuleConst.mAngle_Kp; // still not sure about that
     }
 
     public void setAngle(double angle) {
         mAngle.set(ControlMode.Position, convertAngle2Pulse(angle),
-                DemandType.ArbitraryFeedForward, calcFF());
+                DemandType.ArbitraryFeedForward, calcFF(angle));
     }
 
     public void setPowerAngle(double power) {
@@ -126,7 +126,7 @@ public class SwerveModule implements Sendable {
         return mAngle.getSelectedSensorPosition();
     }
 
-    @Override
+    // @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Module vel", this::getVel, null);
         builder.addDoubleProperty("Module angle", this::getAngle, null);

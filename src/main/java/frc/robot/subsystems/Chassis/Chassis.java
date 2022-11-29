@@ -34,8 +34,8 @@ public class Chassis extends SubsystemBase {
     private final SwerveModule front_right, back_right, back_left, front_left;
     private final SwerveDriveOdometry odometry;
     private PigeonIMU gyro;
-    private ShuffleboardTab tab = Shuffleboard.getTab("chassis data");
-    private NetworkTableEntry fieldEntry = tab.add("Field", 0).getEntry();
+    //private ShuffleboardTab tab = Shuffleboard.getTab("chassis data");
+    //private NetworkTableEntry fieldEntry = tab.add("Field", 0).getEntry();
 
     public Chassis(PigeonIMU gyro) {
         this.gyro = gyro;
@@ -159,8 +159,8 @@ public class Chassis extends SubsystemBase {
         SwerveModuleState[] sms = getCurrentModuleStates();
         odometryUpdate(sms);
         setField(getPose());
-        //SmartDashboard.putData("Field", getField());
-        fieldEntry.setValue(getField());        
+        SmartDashboard.putData("Field", getField());
+        //fieldEntry.setValue(getField());        
 
     }
 
