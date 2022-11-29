@@ -25,10 +25,11 @@ public class SwerveModule {
     private final SimpleMotorFeedforward ff;
     private double offset;
 
-    public SwerveModule(boolean isC, int vel, int angle, int CAN) {
+    public SwerveModule(double offset, int vel, int angle, int CAN ) {
         this.mVel = new WPI_TalonFX(vel);
         this.mAngle = new WPI_TalonFX(angle);
         this.encoder = new WPI_CANCoder(CAN);
+        this.offset = offset;
 
         mVel.configFactoryDefault();
         mAngle.configFactoryDefault();
@@ -43,9 +44,9 @@ public class SwerveModule {
 
         this.ff = new SimpleMotorFeedforward(Constants.ModuleConst.Ks, Constants.ModuleConst.Kv);
 
-        if (isC) {
-            calibrate();
-        }
+        // if (isC) {
+        //     calibrate();
+        // }
 
     }
 
@@ -88,7 +89,7 @@ public class SwerveModule {
 
     public void setAngle(double angle) {
         mAngle.set(ControlMode.Position, convertAngle2Pulse(angle),
-                DemandType.ArbitraryFeedForward, calcFF(angle));
+                DemandType.ArbitraryFeedForward, 0);
     }
 
     public void setPowerAngle(double power) {

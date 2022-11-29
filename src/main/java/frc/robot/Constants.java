@@ -53,8 +53,8 @@ public final class Constants {
         public static final double mVel_Ki = 0.0;
         public static final double mVel_Kd = 0.0006;
 
-        public static final double mAngle_Kp = 0.058;
-        public static final double mAngle_Ki = 0;
+        public static final double mAngle_Kp = 0.13;
+        public static final double mAngle_Ki = 0.0003;
         public static final double mAngle_Kd = 0.00;
 
         public static final double PPR_FALCON = 2048;

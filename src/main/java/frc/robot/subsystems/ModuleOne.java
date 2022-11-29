@@ -30,7 +30,7 @@ public class ModuleOne extends SubsystemBase {
 
     public ModuleOne() {
 
-        module = new SwerveModule(false, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
+        module = new SwerveModule(Constants.Offsets.FRONT_LEFT_OFFSET, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
         // module.getMoveMotor().setInverted(Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
@@ -48,11 +48,9 @@ public class ModuleOne extends SubsystemBase {
                 new RunCommand(() -> module.setAngle(SmartDashboard.getNumber("target angle", 0)), this)
                         .andThen(new InstantCommand(() -> module.setPowerAngle(0), this)));
 
-        SmartDashboard.putData("Calibrate", new InstantCommand(() -> {
-            module.calibrate();
-            System.out.println("calling calibrate!");
-        }, this));
-
+        // SmartDashboard.putData("Calibrate", new InstantCommand(() -> {
+        //     module.calibrate();
+        //     System.out.println("calling calibrate!");
     }
 
     public double getVelocity() {
@@ -85,7 +83,7 @@ public class ModuleOne extends SubsystemBase {
 // Command setAngleCommand = new RunCommand(() -> module.setAngle(targetAngleEntry.getDouble(0)), this)
 //            .andThen(new InstantCommand(() -> module.setPowerAngle(0), this));
 
-    Command calibrateCommand = new InstantCommand(() -> module.calibrate(), this);
+    // Command calibrateCommand = new InstantCommand(() -> module.calibrate(), this);
 
     @Override
     public void periodic() {
