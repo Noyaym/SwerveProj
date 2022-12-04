@@ -47,17 +47,17 @@ public class Chassis extends SubsystemBase {
 
         front_right = new SwerveModule(Constants.Offsets.FRONT_RIGHT_OFFSET, Constants.ModuleConst.FRONT_RIGHT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.FRONT_RIGHT_TURN_MOTOR_ID,
-                Constants.ModuleConst.FRONT_RIGHT_CANCODER_ID);
+                Constants.ModuleConst.FRONT_RIGHT_CANCODER_ID, Constants.ModuleConst.FRONT_RIGHT_SET_INVERT_TYPE);
         back_right = new SwerveModule(Constants.Offsets.BACK_RIGHT_OFFSEST, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
-                Constants.ModuleConst.BACK_RIGHT_CANCODER_ID);
+                Constants.ModuleConst.BACK_RIGHT_CANCODER_ID, Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
         front_left = new SwerveModule(Constants.Offsets.FRONT_LEFT_OFFSET,
         Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
         Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-        Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        Constants.ModuleConst.FRONT_LEFT_CANCODER_ID, Constants.ModuleConst.FRONT_LEFT_SET_INVERT_TYPE);
         back_left = new SwerveModule(Constants.Offsets.BACK_LEFT_OFFSEST, Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
-                Constants.ModuleConst.BACK_LEFT_CANCODER_ID);
+                Constants.ModuleConst.BACK_LEFT_CANCODER_ID, Constants.ModuleConst.BACK_LEFT_SET_INVERT_TYPE);
 
         swerveModules[0] = front_right;
         swerveModules[1] = back_left;

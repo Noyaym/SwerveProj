@@ -30,9 +30,9 @@ public class ModuleOne extends SubsystemBase {
 
     public ModuleOne() {
 
-        module = new SwerveModule(Constants.Offsets.FRONT_LEFT_OFFSET, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
-                Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-                Constants.ModuleConst.FRONT_LEFT_CANCODER_ID);
+        module = new SwerveModule(Constants.Offsets.FRONT_RIGHT_OFFSET, Constants.ModuleConst.FRONT_RIGHT_MOVE_MOTOR_ID,
+                Constants.ModuleConst.FRONT_RIGHT_TURN_MOTOR_ID,
+                Constants.ModuleConst.FRONT_RIGHT_CANCODER_ID, Constants.ModuleConst.FRONT_RIGHT_SET_INVERT_TYPE);
         // module.getMoveMotor().setInverted(Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
         // Command setVelocityCommand = new RunCommand(() -> module.setVel(targetVelocityEntry.getDouble(0)), this)
         //        .andThen(new InstantCommand(() -> module.setVel(0), this));
@@ -41,16 +41,15 @@ public class ModuleOne extends SubsystemBase {
         // SmartDashboard.putNumber("target angle", 0);
 
         SmartDashboard.putData("set vel",
-                new RunCommand(() -> module.setVel(SmartDashboard.getNumber("target velocitys", 0)), this)
+                new RunCommand(() -> module.setVel(SmartDashboard.getNumber("target velocity", 0)), this)
                         .andThen(new InstantCommand(() -> module.setVel(0), this)));
 
         SmartDashboard.putData("set angle",
                 new RunCommand(() -> module.setAngle(SmartDashboard.getNumber("target angle", 0)), this)
                         .andThen(new InstantCommand(() -> module.setPowerAngle(0), this)));
 
-        // SmartDashboard.putData("Calibrate", new InstantCommand(() -> {
-        //     module.calibrate();
-        //     System.out.println("calling calibrate!");
+        SmartDashboard.putData("Calibrate", new InstantCommand(() ->
+        module.calibrate()));
     }
 
     public double getVelocity() {

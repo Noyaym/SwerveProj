@@ -25,7 +25,7 @@ public class SwerveModule {
     private final SimpleMotorFeedforward ff;
     private double offset;
 
-    public SwerveModule(double offset, int vel, int angle, int CAN ) {
+    public SwerveModule(double offset, int vel, int angle, int CAN, boolean setInverted) {
         this.mVel = new WPI_TalonFX(vel);
         this.mAngle = new WPI_TalonFX(angle);
         this.encoder = new WPI_CANCoder(CAN);
@@ -33,6 +33,8 @@ public class SwerveModule {
 
         mVel.configFactoryDefault();
         mAngle.configFactoryDefault();
+
+        mAngle.setInverted(setInverted);
 
         mVel.config_kP(0, Constants.ModuleConst.mVel_Kp);
         mVel.config_kI(0, Constants.ModuleConst.mVel_Ki);
@@ -51,7 +53,9 @@ public class SwerveModule {
     }
 
     public double getAngle() {
-        return encoder.getAbsolutePosition() - offset;
+        double value  = encoder.getAbsolutePosition() - offset;
+        if (value<0) value = 360 + value;
+        return value;
     }
 
     public Rotation2d getAngleRotation2d() {
