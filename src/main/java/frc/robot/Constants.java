@@ -92,8 +92,8 @@ public final class Constants {
         public static final double FRONT_RIGHT_LOCATION_X = 0.262;
         public static final double FRONT_RIGHT_LOCATION_Y = 0.307;
         
-        public static final double FRONT_LEFT_LOCATION_X = 0;
-        public static final double FRONT_LEFT_LOCATION_Y = 0;
+        public static final double FRONT_LEFT_LOCATION_X = -0.262;
+        public static final double FRONT_LEFT_LOCATION_Y = 0.307;
         
         public static final double BACK_LEFT_LOCATION_X = -0.262;
         public static final double BACK_LEFT_LOCATION_Y = -0.307;
