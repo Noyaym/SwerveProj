@@ -29,33 +29,34 @@ public final class Constants {
     public final class ModuleConst {
 
 
-        public static final int FRONT_LEFT_MOVE_MOTOR_ID = 26;
-        public static final int FRONT_LEFT_TURN_MOTOR_ID = 29;
-        public static final int FRONT_LEFT_CANCODER_ID = 31;
-        public static final boolean FRONT_LEFT_SET_INVERT_TYPE = true;
+        public static final int FRONT_LEFT_MOVE_MOTOR_ID = 7;
+        public static final int FRONT_LEFT_TURN_MOTOR_ID = 8;
+        public static final int FRONT_LEFT_CANCODER_ID = 11;
+        public static final boolean FRONT_LEFT_SET_INVERT_TYPE = false;
 
 
-        public static final int FRONT_RIGHT_MOVE_MOTOR_ID = 27;
-        public static final int FRONT_RIGHT_TURN_MOTOR_ID = 30;
-        public static final int FRONT_RIGHT_CANCODER_ID = 28;
-        public static final boolean FRONT_RIGHT_SET_INVERT_TYPE = true;
+        public static final int FRONT_RIGHT_MOVE_MOTOR_ID = 5;
+        public static final int FRONT_RIGHT_TURN_MOTOR_ID = 6;
+        public static final int FRONT_RIGHT_CANCODER_ID = 13;
+        public static final boolean FRONT_RIGHT_SET_INVERT_TYPE = false;
 
-        public static final int BACK_LEFT_MOVE_MOTOR_ID = 25;
-        public static final int BACK_LEFT_TURN_MOTOR_ID = 23;
-        public static final int BACK_LEFT_CANCODER_ID = 21;
+        public static final int BACK_LEFT_MOVE_MOTOR_ID = 1;
+        public static final int BACK_LEFT_TURN_MOTOR_ID = 2;
+        public static final int BACK_LEFT_CANCODER_ID = 10;
+        public static final boolean BACK_LEFT_SET_INVERT_TYPE = true;
 
-        public static final int BACK_RIGHT_MOVE_MOTOR_ID = 24;
-        public static final int BACK_RIGHT_TURN_MOTOR_ID = 22;
-        public static final int BACK_RIGHT_CANCODER_ID = 20;
+        public static final int BACK_RIGHT_MOVE_MOTOR_ID = 3;
+        public static final int BACK_RIGHT_TURN_MOTOR_ID = 4;
+        public static final int BACK_RIGHT_CANCODER_ID = 12;
         public static final boolean BACK_RIGHT_SET_INVERT_TYPE = true;
 
         public static final double mVel_Kp = 0.0058;
         public static final double mVel_Ki = 0.0;
         public static final double mVel_Kd = 0.0006;
 
-        public static final double mAngle_Kp = 0.058;
-        public static final double mAngle_Ki = 0;
-        public static final double mAngle_Kd = 0.00;
+        public static final double mAngle_Kp = 0.7;
+        public static final double mAngle_Ki = 0.01 ;
+        public static final double mAngle_Kd = 0.3;
 
         public static final double PPR_FALCON = 2048;
 
@@ -70,6 +71,13 @@ public final class Constants {
         public static final double Kv = 0.002;
     }
 
+    public final class Offsets{
+        public static final double FRONT_LEFT_OFFSET = 146.42578125;
+        public static final double FRONT_RIGHT_OFFSET = 300.673828125;
+        public static final double BACK_LEFT_OFFSEST = 47.109375;
+        public static final double BACK_RIGHT_OFFSEST = 108.720703125;
+
+    }
     public final class Buttons {
         public static final int JOYSTICK_XY_PORT_NUM = 0;
         public static final int JOYSTICK_DIRECTION_PORT_NUM = 0;

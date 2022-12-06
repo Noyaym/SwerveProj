@@ -17,7 +17,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SwerveModule implements Sendable {
+public class SwerveModule {
 
     private final TalonFX mVel;
     private final TalonFX mAngle;
@@ -25,13 +25,16 @@ public class SwerveModule implements Sendable {
     private final SimpleMotorFeedforward ff;
     private double offset;
 
-    public SwerveModule(boolean isC, int vel, int angle, int CAN) {
+    public SwerveModule(double offset, int vel, int angle, int CAN, boolean setInverted) {
         this.mVel = new WPI_TalonFX(vel);
         this.mAngle = new WPI_TalonFX(angle);
         this.encoder = new WPI_CANCoder(CAN);
+        this.offset = offset;
 
         mVel.configFactoryDefault();
         mAngle.configFactoryDefault();
+
+        mAngle.setInverted(setInverted);
 
         mVel.config_kP(0, Constants.ModuleConst.mVel_Kp);
         mVel.config_kI(0, Constants.ModuleConst.mVel_Ki);
@@ -43,14 +46,16 @@ public class SwerveModule implements Sendable {
 
         this.ff = new SimpleMotorFeedforward(Constants.ModuleConst.Ks, Constants.ModuleConst.Kv);
 
-        if (isC) {
-            calibrate();
-        }
+        // if (isC) {
+        //     calibrate();
+        // }
 
     }
 
     public double getAngle() {
-        return encoder.getAbsolutePosition() - offset;
+        double value  = encoder.getAbsolutePosition() - offset;
+        if (value<0) value = 360 + value;
+        return value;
     }
 
     public Rotation2d getAngleRotation2d() {
@@ -82,13 +87,13 @@ public class SwerveModule implements Sendable {
         return offset * Constants.ModuleConst.PULSE_PER_ANGLE;
     }
 
-    public double calcFF() {
-        return convertAngle2Pulse(10); // still not sure about that
+    public double calcFF(double angle) {
+        return Math.signum(angle-getAngle())*(10+getAngle())*Constants.ModuleConst.mAngle_Kp; // still not sure about that
     }
 
     public void setAngle(double angle) {
         mAngle.set(ControlMode.Position, convertAngle2Pulse(angle),
-                DemandType.ArbitraryFeedForward, calcFF());
+                DemandType.ArbitraryFeedForward, 0);
     }
 
     public void setPowerAngle(double power) {
@@ -126,7 +131,7 @@ public class SwerveModule implements Sendable {
         return mAngle.getSelectedSensorPosition();
     }
 
-    @Override
+    // @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Module vel", this::getVel, null);
         builder.addDoubleProperty("Module angle", this::getAngle, null);
