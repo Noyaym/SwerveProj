@@ -92,8 +92,13 @@ public class SwerveModule {
     }
 
     public void setAngle(double angle) {
-        mAngle.set(ControlMode.Position, convertAngle2Pulse(angle),
-                DemandType.ArbitraryFeedForward, 0);
+        double difference = angle - getAngle();
+        mAngle.set(ControlMode.Position, 
+        mAngle.getSelectedSensorPosition()+convertAngle2Pulse(difference),
+                DemandType.ArbitraryFeedForward, 
+                Math.signum(difference)*Constants.ModuleConst.mAngle_Ks);
+        SmartDashboard.putNumber("difference", difference);
+        SmartDashboard.putNumber("error", mAngle.getClosedLoopError());
     }
 
     public void setPowerAngle(double power) {
