@@ -43,7 +43,7 @@ public final class Constants {
         public static final int BACK_LEFT_MOVE_MOTOR_ID = 1;
         public static final int BACK_LEFT_TURN_MOTOR_ID = 2;
         public static final int BACK_LEFT_CANCODER_ID = 10;
-        public static final boolean BACK_LEFT_SET_INVERT_TYPE = true;
+        public static final boolean BACK_LEFT_SET_INVERT_TYPE = false;
 
         public static final int BACK_RIGHT_MOVE_MOTOR_ID = 3;
         public static final int BACK_RIGHT_TURN_MOTOR_ID = 4;
@@ -54,8 +54,8 @@ public final class Constants {
         public static final double mVel_Ki = 0.0;
         public static final double mVel_Kd = 0.0006;
 
-        public static final double mAngle_Kp = 0.12;
-        public static final double mAngle_Ki = 0.0 ;
+        public static final double mAngle_Kp = 0.2;
+        public static final double mAngle_Ki = 0.002 ;
         public static final double mAngle_Kd = 0.0;
         public static final double mAngle_Ks = 0.0;
 
@@ -63,7 +63,7 @@ public final class Constants {
         public static final double PPR_FALCON = 2048;
 
         public static final double WHEEL_PEREMITER = 0.1016;
-        public static final double GEAR_RATIO_VEL = 12.8;
+        public static final double GEAR_RATIO_VEL = 12.8; //TODO: find the actual correct gear ratio
         public static final double PULSE_PER_METER = PPR_FALCON*GEAR_RATIO_VEL/WHEEL_PEREMITER;
 
         public static final double GEAR_RATIO_ANGLE = 12.8;

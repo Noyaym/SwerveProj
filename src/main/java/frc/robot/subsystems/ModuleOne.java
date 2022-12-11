@@ -15,12 +15,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants;
 import frc.robot.SwerveModule;
 
 public class ModuleOne extends SubsystemBase {
 
     private SwerveModule module;
+    public boolean hasSetVel = false;
     // private NetworkTableEntry velocityEntry = Shuffleboard.getTab("Module 1 data").add("Velocity", 0).getEntry();
     // private NetworkTableEntry angleEntry = Shuffleboard.getTab("Module 1 data").add("Angle", 0).getEntry();
     // private NetworkTableEntry offsetEntry = Shuffleboard.getTab("Module 1 data").add("offset", 0).getEntry();
@@ -30,9 +32,9 @@ public class ModuleOne extends SubsystemBase {
 
     public ModuleOne() {
 
-        module = new SwerveModule(Constants.Offsets.BACK_RIGHT_OFFSEST, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
-                Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
-                Constants.ModuleConst.BACK_RIGHT_CANCODER_ID, Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
+        module = new SwerveModule(Constants.Offsets.BACK_LEFT_OFFSEST, Constants.ModuleConst.BACK_LEFT_MOVE_MOTOR_ID,
+                Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
+                Constants.ModuleConst.BACK_LEFT_CANCODER_ID, Constants.ModuleConst.BACK_LEFT_SET_INVERT_TYPE);
         // module.getMoveMotor().setInverted(Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
         // Command setVelocityCommand = new RunCommand(() -> module.setVel(targetVelocityEntry.getDouble(0)), this)
         //        .andThen(new InstantCommand(() -> module.setVel(0), this));
@@ -46,7 +48,7 @@ public class ModuleOne extends SubsystemBase {
 
         SmartDashboard.putData("set angle",
                 new RunCommand(() -> module.setAngle(SmartDashboard.getNumber("target angle", 0)), this)
-                        .andThen(new InstantCommand(() -> module.setPowerAngle(0), this)));
+                .andThen(new InstantCommand(() -> module.setPowerAngle(0), this)));
 
         SmartDashboard.putData("Calibrate", new InstantCommand(() ->
         module.calibrate()));
@@ -68,6 +70,20 @@ public class ModuleOne extends SubsystemBase {
         return module.getOffset();
     }
 
+    public double getError() {
+        return module.getSteerMotor().getClosedLoopError();
+    }
+
+    public boolean isErrorNegative() {
+        return module.getSteerMotor().getClosedLoopError()<0;
+    }
+
+    public double getTarget() {
+        if (hasSetVel)
+            return module.getSteerMotor().getClosedLoopTarget();
+        return 0;
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         SmartDashboard.putNumber("target velocity", 0);
@@ -77,6 +93,9 @@ public class ModuleOne extends SubsystemBase {
 
         builder.addDoubleProperty("offset", this::getOffset, null);
         builder.addDoubleProperty("pulses", this::getSelectedSensorPosition, null);
+        builder.addDoubleProperty("error", this::getError, null);
+        builder.addDoubleProperty("target", this::getTarget, null);
+        builder.addBooleanProperty("is negative", this::isErrorNegative, null);
 
     }
 

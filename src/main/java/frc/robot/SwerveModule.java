@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+import frc.robot.Constants.ModuleConst;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,15 +37,15 @@ public class SwerveModule {
 
         mAngle.setInverted(setInverted);
 
-        mVel.config_kP(0, Constants.ModuleConst.mVel_Kp);
-        mVel.config_kI(0, Constants.ModuleConst.mVel_Ki);
-        mVel.config_kD(0, Constants.ModuleConst.mVel_Kd);
+        mVel.config_kP(0, ModuleConst.mVel_Kp);
+        mVel.config_kI(0, ModuleConst.mVel_Ki);
+        mVel.config_kD(0, ModuleConst.mVel_Kd);
 
-        mAngle.config_kP(0, Constants.ModuleConst.mAngle_Kp);
-        mAngle.config_kI(0, Constants.ModuleConst.mAngle_Ki);
-        mAngle.config_kD(0, Constants.ModuleConst.mAngle_Kd);
+        mAngle.config_kP(0, ModuleConst.mAngle_Kp);
+        mAngle.config_kI(0, ModuleConst.mAngle_Ki);
+        mAngle.config_kD(0, ModuleConst.mAngle_Kd);
 
-        this.ff = new SimpleMotorFeedforward(Constants.ModuleConst.Ks, Constants.ModuleConst.Kv);
+        this.ff = new SimpleMotorFeedforward(ModuleConst.Ks, ModuleConst.Kv);
 
         // if (isC) {
         //     calibrate();
@@ -65,7 +66,7 @@ public class SwerveModule {
 
 
     public double getVel() {
-        return mVel.getSelectedSensorVelocity() / Constants.ModuleConst.PULSE_PER_METER * 10;
+        return mVel.getSelectedSensorVelocity() / ModuleConst.PULSE_PER_METER * 10;
     }
 
     public double getOffset() {
@@ -73,32 +74,47 @@ public class SwerveModule {
     }
 
     public void setVel(double velocity) {
-        mVel.set(ControlMode.Velocity, velocity * Constants.ModuleConst.PULSE_PER_METER / 10,
+        mVel.set(ControlMode.Velocity, velocity * ModuleConst.PULSE_PER_METER / 10,
                 DemandType.ArbitraryFeedForward, ff.calculate(velocity));
     }
 
 
 
     public double convertAngle2Pulse(double angle) {
-        return angle * Constants.ModuleConst.PULSE_PER_ANGLE;
+        return angle * ModuleConst.PULSE_PER_ANGLE;
     }
 
     public double convertOffset2Pulse() {
-        return offset * Constants.ModuleConst.PULSE_PER_ANGLE;
+        return offset * ModuleConst.PULSE_PER_ANGLE;
     }
 
     public double calcFF(double angle) {
-        return Math.signum(angle-getAngle())*(10+getAngle())*Constants.ModuleConst.mAngle_Kp; // still not sure about that
+        return Math.signum(angle-getAngle())*(10+getAngle())*ModuleConst.mAngle_Kp; // still not sure about that
+    }
+
+    public double FeedForward(double difference) {
+        return Math.signum(difference)*ModuleConst.mAngle_Ks;
+    }
+
+    public double optimizeAngleDemacia(double difference) {
+        if (difference > 180)
+            return difference - 360;
+        if (difference < -180) 
+            return difference + 360;
+        return difference;
     }
 
     public void setAngle(double angle) {
-        double difference = angle - getAngle();
-        mAngle.set(ControlMode.Position, 
+        double dif = angle - getAngle();
+        double difference = optimizeAngleDemacia(dif);
+        mAngle.set(ControlMode.Position,
         mAngle.getSelectedSensorPosition()+convertAngle2Pulse(difference),
                 DemandType.ArbitraryFeedForward, 
-                Math.signum(difference)*Constants.ModuleConst.mAngle_Ks);
+                FeedForward(difference));
         SmartDashboard.putNumber("difference", difference);
-        SmartDashboard.putNumber("error", mAngle.getClosedLoopError());
+        SmartDashboard.putNumber("angle", angle);
+        SmartDashboard.putNumber("selctedSensorPosition", 
+        mAngle.getSelectedSensorPosition()/ModuleConst.PULSE_PER_ANGLE);
     }
 
     public void setPowerAngle(double power) {
