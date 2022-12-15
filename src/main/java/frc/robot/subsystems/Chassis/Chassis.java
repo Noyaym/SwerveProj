@@ -5,7 +5,7 @@ import java.security.PublicKey;
 
 import com.ctre.phoenix.Util;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import frc.robot.subsystems.Chassis.Utils;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,7 +24,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.SwerveModule;
+import frc.robot.commands.DriveByJoystickCommand;
+import frc.robot.utils.SwerveModule;
+import frc.robot.utils.Utils;
 import frc.robot.RobotContainer;
 import frc.robot.Constants;
 
@@ -41,7 +43,7 @@ public class Chassis extends SubsystemBase {
         this.gyro = gyro;
         this.field = new Field2d();
 
-        odometry = new SwerveDriveOdometry(Constants.kinematics.SWERVE_KINEMATICS, getRotation2d());
+        odometry = new SwerveDriveOdometry(Constants.Kinematics.SWERVE_KINEMATICS, getRotation2d());
 
         swerveModules = new SwerveModule[Constants.NUMBER_OF_WHEELS];
 
@@ -64,6 +66,10 @@ public class Chassis extends SubsystemBase {
         swerveModules[2] = back_right;
         swerveModules[3] = front_left;
 
+        setDefaultCommand(new DriveByJoystickCommand(this));
+
+        SmartDashboard.putData("Field", getField());
+
     }
 
     public SwerveModuleState[] getCurrentModuleStates() {
@@ -85,7 +91,12 @@ public class Chassis extends SubsystemBase {
 
             sModuleStatesOptimized[i] = SwerveModuleState.optimize(sModuleStates[i],
             new Rotation2d(swerveModules[i].getAngle()));
+
+            System.out.println(sModuleStates[i].angle.getDegrees());
+            System.out.println("-------");
         }
+
+
 
         return sModuleStatesOptimized;
     }
@@ -155,11 +166,28 @@ public class Chassis extends SubsystemBase {
     }
 
     @Override
+    public void initSendable(SendableBuilder builder) {
+        
+
+    }
+
+    @Override
     public void periodic() {
+        SmartDashboard.putNumber("module 0 angle", swerveModules[0].getAngle());
+        SmartDashboard.putNumber("module 0 speed", swerveModules[0].getVel());
+
+        SmartDashboard.putNumber("module 1 angle", swerveModules[1].getAngle());
+        SmartDashboard.putNumber("module 1 speed", swerveModules[1].getVel());
+
+        SmartDashboard.putNumber("module 2 angle", swerveModules[2].getAngle());
+        SmartDashboard.putNumber("module 2 speed", swerveModules[2].getVel());
+
+        SmartDashboard.putNumber("module 3 angle", swerveModules[3].getAngle());
+        SmartDashboard.putNumber("module 3 speed", swerveModules[3].getVel());
+
         SwerveModuleState[] sms = getCurrentModuleStates();
         odometryUpdate(sms);
         setField(getPose());
-        SmartDashboard.putData("Field", getField());
         //fieldEntry.setValue(getField());        
 
     }

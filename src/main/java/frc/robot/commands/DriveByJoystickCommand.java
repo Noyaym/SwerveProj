@@ -3,11 +3,12 @@ package frc.robot.commands;
 import com.ctre.phoenix.Util;
 
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.ChassiConst;
+import frc.robot.Constants.ChassisConst;
 import frc.robot.subsystems.Chassis.Chassis;
-import frc.robot.subsystems.Chassis.Utils;
+import frc.robot.utils.Utils;
 
 public class DriveByJoystickCommand extends CommandBase {
 
@@ -21,10 +22,20 @@ public class DriveByJoystickCommand extends CommandBase {
     @Override
     public void execute() {
         double vx = Utils.getJoystickX(RobotContainer.joystickXY);
+        SmartDashboard.putNumber("vx", vx);
         double vy = Utils.getJoystickY(RobotContainer.joystickXY);
+        SmartDashboard.putNumber("vy", vy);
         double ang = Utils.getJoystickAngle(RobotContainer.joystickDirection);
+        SmartDashboard.putNumber("angle swerve", ang);
         SwerveModuleState[] sms = chassis.getModulesOptimize(vx, vy, ang);
-        chassis.setModules(sms);
+        SmartDashboard.putNumber("sms angle", sms[1].angle.getDegrees());
+        SmartDashboard.putNumber("sms speed", sms[1].speedMetersPerSecond);
+        if (vx == 0 && vy == 0) {
+            chassis.setPowerAngle(0);
+            chassis.setPowerVelocity(0);
+        }
+        else
+            chassis.setModules(sms);
     }
     
 }

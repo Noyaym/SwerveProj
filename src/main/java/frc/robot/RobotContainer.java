@@ -75,7 +75,9 @@ public class RobotContainer {
   public Chassis chassis;
 
   public RobotContainer() {
-    gyro = new WPI_PigeonIMU(Constants.ChassiConst.jyro_PORT_NUM);
+    gyro = new WPI_PigeonIMU(Constants.ChassisConst.gyro_PORT_NUM);
+    joystickXY = new Joystick(Constants.Buttons.JOYSTICK_XY_PORT_NUM);
+    joystickDirection = new Joystick(Constants.Buttons.JOYSTICK_DIRECTION_PORT_NUM);
     moduleOne = new ModuleOne();
     chassis = new Chassis(gyro);
 
