@@ -45,6 +45,8 @@ public class SwerveModule {
         mAngle.config_kI(0, ModuleConst.mAngle_Ki);
         mAngle.config_kD(0, ModuleConst.mAngle_Kd);
 
+        //mAngle.configAllowableClosedloopError(0, 10); TODO: check if works
+
         this.ff = new SimpleMotorFeedforward(ModuleConst.Ks, ModuleConst.Kv);
 
         // if (isC) {
@@ -57,6 +59,12 @@ public class SwerveModule {
         double value  = encoder.getAbsolutePosition() - offset;
         if (value<0) value = 360 + value;
         return value;
+    }
+
+    
+
+    public double getAngleNotWithin360() {
+        return encoder.getAbsolutePosition() - offset;
     }
 
     public Rotation2d getAngleRotation2d() {
@@ -96,17 +104,9 @@ public class SwerveModule {
         return Math.signum(difference)*ModuleConst.mAngle_Ks;
     }
 
-    public double optimizeAngleDemacia(double difference) {
-        if (difference > 180)
-            return difference - 360;
-        if (difference < -180) 
-            return difference + 360;
-        return difference;
-    }
-
     public void setAngle(double angle) {
         double dif = angle - getAngle();
-        double difference = optimizeAngleDemacia(dif);
+        double difference = Utils.optimizeAngleDemacia(dif);
         mAngle.set(ControlMode.Position,
         mAngle.getSelectedSensorPosition()+convertAngle2Pulse(difference),
                 DemandType.ArbitraryFeedForward, 

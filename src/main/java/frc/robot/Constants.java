@@ -92,9 +92,11 @@ public final class Constants {
     public final static class ChassisConst {
         public static final int gyro_PORT_NUM = 14;
         public final static Translation2d[] wheelsMeters = new Translation2d[] {};
-        public static final double ANGLE_2RADPERSEC_Kp = 0;
+        public static final double ANGLE_2RADPERSEC_Kp = 0.2;
         public static final double ANGLE_2RADPERSEC_Ki = 0;
         public static final double ANGLE_2RADPERSEC_Kd = 0;
+
+        public static final double max_VELOCITY = 3;
     }
 
 
@@ -102,15 +104,15 @@ public final class Constants {
     public final static class Kinematics {
         // Locations for the swerve drive modules relative to the robot center.
         public static final double FRONT_RIGHT_LOCATION_X = 0.262;
-        public static final double FRONT_RIGHT_LOCATION_Y = 0.307;
+        public static final double FRONT_RIGHT_LOCATION_Y = -0.307;
         
-        public static final double FRONT_LEFT_LOCATION_X = -0.262;
+        public static final double FRONT_LEFT_LOCATION_X = 0.262;
         public static final double FRONT_LEFT_LOCATION_Y = 0.307;
         
         public static final double BACK_LEFT_LOCATION_X = -0.262;
-        public static final double BACK_LEFT_LOCATION_Y = -0.307;
+        public static final double BACK_LEFT_LOCATION_Y = 0.307;
         
-        public static final double BACK_RIGHT_LOCATION_X = 0.262;
+        public static final double BACK_RIGHT_LOCATION_X = -0.262;
         public static final double BACK_RIGHT_LOCATION_Y = -0.307;
         
         // define modules location

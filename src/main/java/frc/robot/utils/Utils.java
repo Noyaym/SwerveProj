@@ -44,15 +44,13 @@ public class Utils {
 
     public static double getJoystickAngle(Joystick joystick) {
         double y = joystick.getY();
+        if (!isJoystickInRange(y)) {
+            y = 0.0;}
         double x = joystick.getX();
+        if (!isJoystickInRange(x)) {
+            x = 0.0; }
         double angle = Math.atan2(y, x);
-        double val;
-        if (!isJoystickInRange(angle)) {
-            val = 0.0;
-        } else {
-            val = normalizeJoystick(angle);
-        }
-        return val;
+        return angle*360;
 
     }
 
@@ -70,9 +68,44 @@ public class Utils {
 
     }
 
+    public static double timesMaxVelocity(double valueJoystick) {
+        return valueJoystick*Constants.ChassisConst.max_VELOCITY;
+    }
+
+    public static double normalizeAngle(double angle) {
+        return ((angle%360)+360)%360;
+    }
+
+    // public void normalizeModules(SwerveModuleState[] swmBeforeNormalized) {
+    //     SwerveModuleState[] aftNormalized = new SwerveModuleState[swmBeforeNormalized.length];
+    //     for (int i=0; i<swmBeforeNormalized.length; i++) {
+    //         aftNormalized[i] = new SwerveModuleState(swmBeforeNormalized[i].speedMetersPerSecond,
+    //         normalizeAngle(swmBeforeNormalized[i].angle));
+    //     }
+    // }
+
+    public static double optimizeAngleDemacia(double difference) {
+        if (difference > Math.PI)
+            return difference - 2*Math.PI;
+        if (difference < -Math.PI) 
+            return difference + 2*Math.PI;
+        return difference;
+    }
+
+    public static double optimizeRadDemacia(double difference) {
+        if (difference > 180)
+            return difference - 360;
+        if (difference < -180) 
+            return difference + 360;
+        return difference;
+    }
+
     public static SwerveModuleState[] getSwerveState(double vx, double vy, double desiredAngle) {
-        double dif = desiredAngle - getGyroPosition(RobotContainer.gyro);
+        double dif = radianFromDegrees(desiredAngle) - radianFromDegrees(getGyroPosition(RobotContainer.gyro));
+        dif = optimizeRadDemacia(dif);
+        SmartDashboard.putNumber("differenceAngle", dif);
         double radPerSec = mPIDangle2radPerSec.calculate(dif);
+        SmartDashboard.putNumber("radPerSec", radPerSec);
         Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.gyro)); // i am not sure about it but i think this is how its should be done (with the current angle)
 
 
@@ -89,11 +122,16 @@ public class Utils {
     
 
     public static double getGyroPosition(PigeonIMU gyro) {
-        return gyro.getFusedHeading();
+        return normalizeAngle(gyro.getFusedHeading());
     }
 
-    public Rotation2d getRotation2d(double angle) {
-        return new Rotation2d(angle);
+    public static Rotation2d getRotation2d(double angle) {
+        return Rotation2d.fromDegrees(angle);
+    }
+
+    public static double radianFromDegrees(double degree) {
+        degree = normalizeAngle(degree);
+        return degree*Math.PI/180;
     }
 
 }

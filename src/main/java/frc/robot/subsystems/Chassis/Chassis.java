@@ -86,16 +86,21 @@ public class Chassis extends SubsystemBase {
 
         SwerveModuleState[] sModuleStates = Utils.getSwerveState(vx, vy, desiredAngle);
         SwerveModuleState[] sModuleStatesOptimized = new SwerveModuleState[sModuleStates.length];
+        
 
         for (int i = 0; i < sModuleStates.length; i++) {
 
+            double angle = swerveModules[i].getAngle();
+
             sModuleStatesOptimized[i] = SwerveModuleState.optimize(sModuleStates[i],
-            new Rotation2d(swerveModules[i].getAngle()));
+                Rotation2d.fromDegrees(angle));
 
-            System.out.println(sModuleStates[i].angle.getDegrees());
-            System.out.println("-------");
+            System.out.println("i=" + i + " optimize " + sModuleStatesOptimized[i].angle.getDegrees()
+             + " before opt=" + sModuleStates[i].angle.getDegrees() + " current angle = " 
+             + angle);
+
         }
-
+        System.out.println("--------");
 
 
         return sModuleStatesOptimized;
