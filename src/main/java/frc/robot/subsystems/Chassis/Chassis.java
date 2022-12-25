@@ -36,6 +36,9 @@ public class Chassis extends SubsystemBase {
     private final SwerveModule front_right, back_right, back_left, front_left;
     private final SwerveDriveOdometry odometry;
     private PigeonIMU gyro;
+    private PIDController pidX;
+    private PIDController pidY;
+    private PIDController pidRad;
     //private ShuffleboardTab tab = Shuffleboard.getTab("chassis data");
     //private NetworkTableEntry fieldEntry = tab.add("Field", 0).getEntry();
 
@@ -70,6 +73,11 @@ public class Chassis extends SubsystemBase {
 
         SmartDashboard.putData("Field", getField());
 
+        pidRad = new PIDController(Constants.ChassisConst.ANGLE_2RADPERSEC_Kp, Constants.ChassisConst.ANGLE_2RADPERSEC_Ki,
+        Constants.ChassisConst.ANGLE_2RADPERSEC_Kd);
+
+
+
     }
 
     public SwerveModuleState[] getCurrentModuleStates() {
@@ -82,6 +90,42 @@ public class Chassis extends SubsystemBase {
 
     }
 
+    public SwerveModuleState[] getModulesOptimizedAutonomous(Pose2d currentPose, Pose2d targetPose) {
+        SwerveModuleState[] sModuleStates = Utils.driveTo(currentPose, targetPose);
+        SwerveModuleState[] sModuleStatesOptimized = new SwerveModuleState[sModuleStates.length];
+        
+
+        for (int i = 0; i < sModuleStates.length; i++) {
+            double angle = Utils.normalizeAngle(swerveModules[i].getAngle());
+
+            sModuleStatesOptimized[i] = SwerveModuleState.optimize(sModuleStates[i],
+            Rotation2d.fromDegrees(angle));
+
+            Rotation2d angleR2D = sModuleStatesOptimized[i].angle;
+            
+            Double newAngle = Utils.normalizeAngle(angleR2D.getDegrees());
+            sModuleStatesOptimized[i] = new SwerveModuleState(sModuleStatesOptimized[i].
+            speedMetersPerSecond, Rotation2d.fromDegrees(newAngle));
+            
+
+            System.out.println("i=" + i + " optimize " + sModuleStatesOptimized[i].angle.getDegrees()
+             + " before opt=" + sModuleStates[i].angle.getDegrees() + " current angle = " 
+             + angle);
+
+            //  System.out.println("i=" + i + " optimize " + sModuleStatesOptimized[i].speedMetersPerSecond
+            //  + " before opt=" + sModuleStates[i].speedMetersPerSecond + " current angle = " 
+            //  + swerveModules[i].getVel());
+
+
+
+        }
+        System.out.println("--------");
+
+
+        return sModuleStatesOptimized;
+
+    }
+
     public SwerveModuleState[] getModulesOptimize(double vx, double vy, double desiredAngle) {
 
         SwerveModuleState[] sModuleStates = Utils.getSwerveState(vx, vy, desiredAngle);
@@ -89,15 +133,27 @@ public class Chassis extends SubsystemBase {
         
 
         for (int i = 0; i < sModuleStates.length; i++) {
-
-            double angle = swerveModules[i].getAngle();
+            double angle = Utils.normalizeAngle(swerveModules[i].getAngle());
 
             sModuleStatesOptimized[i] = SwerveModuleState.optimize(sModuleStates[i],
                 Rotation2d.fromDegrees(angle));
 
+            Rotation2d angleR2D = sModuleStatesOptimized[i].angle;
+            
+            Double newAngle = Utils.normalizeAngle(angleR2D.getDegrees());
+            sModuleStatesOptimized[i] = new SwerveModuleState(sModuleStatesOptimized[i].
+            speedMetersPerSecond, Rotation2d.fromDegrees(newAngle));
+            
+
             System.out.println("i=" + i + " optimize " + sModuleStatesOptimized[i].angle.getDegrees()
              + " before opt=" + sModuleStates[i].angle.getDegrees() + " current angle = " 
              + angle);
+
+            //  System.out.println("i=" + i + " optimize " + sModuleStatesOptimized[i].speedMetersPerSecond
+            //  + " before opt=" + sModuleStates[i].speedMetersPerSecond + " current angle = " 
+            //  + swerveModules[i].getVel());
+
+
 
         }
         System.out.println("--------");
@@ -105,6 +161,8 @@ public class Chassis extends SubsystemBase {
 
         return sModuleStatesOptimized;
     }
+
+    
 
     public SwerveModule[] getThisSwerveModules() {
         return swerveModules;

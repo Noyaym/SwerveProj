@@ -28,17 +28,19 @@ public class DriveByJoystickCommand extends CommandBase {
 
     @Override
     public void execute() {
-        //double vx = Utils.timesMaxVelocity(Utils.getJoystickX(RobotContainer.joystickXY));
+        double vx = Utils.timesMaxVelocity(Utils.getJoystickX(RobotContainer.joystickXY));
 
-        double vx = SmartDashboard.getNumber("vx", 0);
-        //double vy = Utils.timesMaxVelocity(Utils.getJoystickY(RobotContainer.joystickXY));
-        double vy = SmartDashboard.getNumber("vy", 0);
+        //double vx = SmartDashboard.getNumber("vx", 0);
+        double vy = Utils.timesMaxVelocity(Utils.getJoystickY(RobotContainer.joystickXY));
+        //double vy = SmartDashboard.getNumber("vy", 0);
         double ang = Utils.getJoystickAngle(RobotContainer.joystickDirection);
         SmartDashboard.putNumber("angle swerve", ang);
 
         SwerveModuleState[] sms = chassis.getModulesOptimize(vx, vy, ang);
         SmartDashboard.putNumber("sms angle", sms[1].angle.getDegrees());
         SmartDashboard.putNumber("sms speed", sms[1].speedMetersPerSecond);
+        //&& Utils.getOmega(ang)==0
+        
         if (vx == 0 && vy == 0) {
             chassis.setPowerAngle(0);
             chassis.setPowerVelocity(0);

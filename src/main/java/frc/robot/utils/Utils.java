@@ -3,6 +3,7 @@ package frc.robot.utils;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -16,9 +17,15 @@ import frc.robot.Constants.Kinematics;
 
 public class Utils {
 
-    private static PIDController mPIDangle2radPerSec = new 
+    private static PIDController pidRad = new 
     PIDController(Constants.ChassisConst.ANGLE_2RADPERSEC_Kp, Constants.ChassisConst.ANGLE_2RADPERSEC_Ki,
     Constants.ChassisConst.ANGLE_2RADPERSEC_Kd);
+
+    private static PIDController pidX = new PIDController(Constants.ChassisConst.errorX_2VX_Kp,
+    Constants.ChassisConst.errorX_2VX_Ki, Constants.ChassisConst.errorX_2VX_Kd);
+    
+    private static PIDController pidY = new PIDController(Constants.ChassisConst.errorY_2VY_Kp,
+    Constants.ChassisConst.errorY_2VY_Ki, Constants.ChassisConst.errorY_2VY_Kd);
 
     public static double getJoystickX(Joystick joystick) {
         double x = -joystick.getX();
@@ -84,7 +91,7 @@ public class Utils {
     //     }
     // }
 
-    public static double optimizeAngleDemacia(double difference) {
+    public static double optimizeRadDemacia(double difference) {
         if (difference > Math.PI)
             return difference - 2*Math.PI;
         if (difference < -Math.PI) 
@@ -92,7 +99,7 @@ public class Utils {
         return difference;
     }
 
-    public static double optimizeRadDemacia(double difference) {
+    public static double optimizeAngleDemacia(double difference) {
         if (difference > 180)
             return difference - 360;
         if (difference < -180) 
@@ -100,11 +107,54 @@ public class Utils {
         return difference;
     }
 
+    public static double getOmega(double desiredAngle) {
+        double dif = radianFromDegrees(desiredAngle) - radianFromDegrees(getGyroPosition(RobotContainer.gyro));
+        dif = optimizeRadDemacia(dif);
+        SmartDashboard.putNumber("differenceAngle", dif);
+        double radPerSec = pidRad.calculate(dif);
+        return radPerSec;
+    }
+
+    public static SwerveModuleState[] driveTo(Pose2d currentPose, Pose2d targetPose) {
+        double errorX = targetPose.getX() - currentPose.getX();
+        double errorY = targetPose.getY() - currentPose.getY();
+        double errorRad = targetPose.getRotation().getRadians() - 
+        radianFromDegrees(getGyroPosition(RobotContainer.gyro));
+        errorRad = optimizeRadDemacia(errorRad);
+
+        double vx = pidX.calculate(errorX);
+        double vy = pidY.calculate(errorY);
+        double radPerSec = pidRad.calculate(errorRad);
+        Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.gyro));
+
+        return getModuleStates(vx, vy, radPerSec, currentAngle);
+
+    }
+
+    public static boolean isInPose(Pose2d currentPose, Pose2d targetPose) {
+        double errorX = targetPose.getX() - currentPose.getX();
+        double errorY = targetPose.getY() - currentPose.getY();
+        double errorRad = targetPose.getRotation().getRadians() - 
+        radianFromDegrees(getGyroPosition(RobotContainer.gyro));
+        errorRad = optimizeRadDemacia(errorRad);
+
+        if (Math.abs(errorX) < Constants.ChassisConst.DEADBAND_AUTONOMOUS 
+        && Math.abs(errorY) < Constants.ChassisConst.DEADBAND_AUTONOMOUS && Math.abs(errorRad) 
+        < Constants.ChassisConst.DEADBAND_AUTONOMOUS_RAD) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
     public static SwerveModuleState[] getSwerveState(double vx, double vy, double desiredAngle) {
         double dif = radianFromDegrees(desiredAngle) - radianFromDegrees(getGyroPosition(RobotContainer.gyro));
         dif = optimizeRadDemacia(dif);
         SmartDashboard.putNumber("differenceAngle", dif);
-        double radPerSec = mPIDangle2radPerSec.calculate(dif);
+        double radPerSec = pidRad.calculate(dif);
         SmartDashboard.putNumber("radPerSec", radPerSec);
         Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.gyro)); // i am not sure about it but i think this is how its should be done (with the current angle)
 
