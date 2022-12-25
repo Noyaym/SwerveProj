@@ -9,6 +9,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Buttons;
@@ -147,6 +148,10 @@ public class Utils {
         return false;
     }
 
+    public static boolean isButtoonPressed(JoystickButton button) {
+        return button.get();
+    }
+
 
 
 
@@ -164,6 +169,15 @@ public class Utils {
 
     public static SwerveModuleState[] getModuleStates(double vx, double vy, double radPerSec, Rotation2d currentAngle) {
         ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, 0, currentAngle);
+        SwerveModuleState[] sModuleStates = Constants.Kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
+
+        return sModuleStates;
+    }
+
+    public static SwerveModuleState[] getModuleStates(double vx, double vy, boolean isPressed, Rotation2d currentAngle) {
+        double rpc = 0;
+        if(isPressed) rpc = 1;
+        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rpc, currentAngle);
         SwerveModuleState[] sModuleStates = Constants.Kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
 
         return sModuleStates;

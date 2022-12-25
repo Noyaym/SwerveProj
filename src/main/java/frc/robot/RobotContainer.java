@@ -11,6 +11,7 @@ import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.Chassis.Chassis;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -73,6 +75,7 @@ public class RobotContainer {
   public static Joystick joystickXY;
   public static Joystick joystickDirection;
   public Chassis chassis;
+  public JoystickButton button;
 
   public RobotContainer() {
     gyro = new WPI_PigeonIMU(Constants.ChassisConst.gyro_PORT_NUM);
@@ -80,6 +83,7 @@ public class RobotContainer {
     joystickDirection = new Joystick(Constants.Buttons.JOYSTICK_DIRECTION_PORT_NUM);
     moduleOne = new ModuleOne();
     chassis = new Chassis(gyro);
+    button = new JoystickButton(joystickXY, 1);
 
   }
 
