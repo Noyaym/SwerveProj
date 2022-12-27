@@ -7,6 +7,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+
+import frc.robot.Constants;
 import frc.robot.Constants.ModuleConst;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -101,6 +103,9 @@ public class SwerveModule {
     }
 
     public double FeedForward(double difference) {
+        if (Math.abs(difference)<Constants.ModuleConst.TOLERANCE) {
+            return 0;
+        }
         return Math.signum(difference)*ModuleConst.mAngle_Ks;
     }
 
@@ -108,7 +113,7 @@ public class SwerveModule {
         double dif = angle - getAngle();
         double difference = Utils.optimizeAngleDemacia(dif);
         mAngle.set(ControlMode.Position,
-        mAngle.getSelectedSensorPosition()+convertAngle2Pulse(difference),
+                mAngle.getSelectedSensorPosition()+convertAngle2Pulse(difference),
                 DemandType.ArbitraryFeedForward, 
                 FeedForward(difference));
         SmartDashboard.putNumber("difference", difference);

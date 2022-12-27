@@ -45,7 +45,8 @@ public class Chassis extends SubsystemBase {
         this.gyro = gyro;
         this.field = new Field2d();
 
-        odometry = new SwerveDriveOdometry(Constants.Kinematics.SWERVE_KINEMATICS, getRotation2d());
+        Pose2d zeroPose = new Pose2d(0, 0, getRotation2dGyroPosition());
+        odometry = new SwerveDriveOdometry(Constants.Kinematics.SWERVE_KINEMATICS, getRotation2dGyroPosition(), zeroPose);
 
         swerveModules = new SwerveModule[Constants.NUMBER_OF_WHEELS];
 
@@ -63,14 +64,17 @@ public class Chassis extends SubsystemBase {
                 Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_CANCODER_ID, Constants.ModuleConst.BACK_LEFT_SET_INVERT_TYPE);
 
-        swerveModules[0] = front_right;
-        swerveModules[1] = back_left;
-        swerveModules[2] = back_right;
-        swerveModules[3] = front_left;
+        swerveModules[0] = front_left;
+        swerveModules[1] = front_right;
+        swerveModules[2] = back_left;
+        swerveModules[3] = back_right;
 
         setDefaultCommand(new Drive2(this));
 
         SmartDashboard.putData("Field", getField());
+
+        SmartDashboard.putData("reset gyro", new InstantCommand(() ->
+        setGyroZero()));
 
 
 
@@ -171,6 +175,11 @@ public class Chassis extends SubsystemBase {
             Double newAngle = Utils.normalizeAngle(angleR2D.getDegrees());
             sModuleStatesOptimized[i] = new SwerveModuleState(sModuleStatesOptimized[i].
             speedMetersPerSecond, Rotation2d.fromDegrees(newAngle));
+
+            System.out.println("i=" + i + " optimize " + sModuleStatesOptimized[i].angle.getDegrees()
+             + " before opt=" + sModuleStates[i].angle.getDegrees() + " current angle = " 
+             + angle);
+
         }
 
 
@@ -187,7 +196,7 @@ public class Chassis extends SubsystemBase {
         return gyro.getFusedHeading();
     }
 
-    public Rotation2d getRotation2d() {
+    public Rotation2d getRotation2dGyroPosition() {
         return Rotation2d.fromDegrees(getGyroPosition());
     }
 
@@ -204,11 +213,11 @@ public class Chassis extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose) { 
-        odometry.resetPosition(pose, getRotation2d());
+        odometry.resetPosition(pose, getRotation2dGyroPosition());
     }
 
     public void odometryUpdate(SwerveModuleState[] swerveModulesState) {
-        odometry.update(getRotation2d(), swerveModulesState);
+        odometry.update(getRotation2dGyroPosition(), swerveModulesState);
     }
 
     public void setField(Pose2d pose) {
@@ -241,6 +250,10 @@ public class Chassis extends SubsystemBase {
         for (int i = 0; i < swerveModules.length; i++) {
             swerveModules[i].setPowerVelocity(power);
         }
+    }
+
+    public void setGyroZero() {
+        RobotContainer.gyro.setFusedHeading(0);
     }
 
     @Override

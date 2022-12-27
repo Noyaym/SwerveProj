@@ -75,7 +75,8 @@ public class RobotContainer {
   public static Joystick joystickXY;
   public static Joystick joystickDirection;
   public Chassis chassis;
-  public JoystickButton button;
+  public static JoystickButton button;
+  public static XboxController xBoxController;
 
   public RobotContainer() {
     gyro = new WPI_PigeonIMU(Constants.ChassisConst.gyro_PORT_NUM);
@@ -84,6 +85,7 @@ public class RobotContainer {
     moduleOne = new ModuleOne();
     chassis = new Chassis(gyro);
     button = new JoystickButton(joystickXY, 1);
+    xBoxController = new XboxController(Constants.Buttons.XBOX_PORT_NUM);
 
   }
 

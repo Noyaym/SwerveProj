@@ -32,9 +32,9 @@ public class ModuleOne extends SubsystemBase {
 
     public ModuleOne() {
 
-        module = new SwerveModule(Constants.Offsets.FRONT_LEFT_OFFSET, Constants.ModuleConst.FRONT_LEFT_MOVE_MOTOR_ID,
-                Constants.ModuleConst.FRONT_LEFT_TURN_MOTOR_ID,
-                Constants.ModuleConst.FRONT_LEFT_CANCODER_ID, Constants.ModuleConst.FRONT_LEFT_SET_INVERT_TYPE);
+        module = new SwerveModule(Constants.Offsets.BACK_RIGHT_OFFSEST, Constants.ModuleConst.BACK_RIGHT_MOVE_MOTOR_ID,
+                Constants.ModuleConst.BACK_RIGHT_TURN_MOTOR_ID,
+                Constants.ModuleConst.BACK_RIGHT_CANCODER_ID, Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
         // module.getMoveMotor().setInverted(Constants.ModuleConst.BACK_RIGHT_SET_INVERT_TYPE);
         // Command setVelocityCommand = new RunCommand(() -> module.setVel(targetVelocityEntry.getDouble(0)), this)
         //        .andThen(new InstantCommand(() -> module.setVel(0), this));

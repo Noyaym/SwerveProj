@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
@@ -60,6 +61,32 @@ public class Utils {
         double angle = Math.atan2(y, x);
         return angle*360;
 
+    }
+
+    public static double getXboxControllerX(XboxController xboxController) {
+        double x = -xboxController.getLeftX();
+        double val;
+        if (!isJoystickInRange(x)) {
+            val = 0.0;
+        } else {
+            val = normalizeJoystick(x);
+        }
+        return val;
+    }
+
+    public static double getXboxControllerY(XboxController xboxController) {
+        double y = -xboxController.getLeftY();
+        double val;
+        if (!isJoystickInRange(y)) {
+            val = 0.0;
+        } else {
+            val = normalizeJoystick(y);
+        }
+        return val;
+    }
+
+    public static boolean isLeftBumperXboxPressed(XboxController xboxController) {
+        return xboxController.getLeftBumper();
     }
 
     public static double normalizeJoystick(double value) {
@@ -175,9 +202,9 @@ public class Utils {
     }
 
     public static SwerveModuleState[] getModuleStates(double vx, double vy, boolean isPressed, Rotation2d currentAngle) {
-        double rpc = 0;
-        if(isPressed) rpc = 1;
-        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rpc, currentAngle);
+        double rps = 0;
+        if(isPressed) rps = 0.5*Math.PI;
+        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rps, currentAngle);
         SwerveModuleState[] sModuleStates = Constants.Kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
 
         return sModuleStates;

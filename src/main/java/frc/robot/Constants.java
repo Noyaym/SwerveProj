@@ -55,16 +55,17 @@ public final class Constants {
         public static final double mVel_Ki = 0.0;
         public static final double mVel_Kd = 0.0006;
 
-        public static final double mAngle_Kp = 0.2;
-        public static final double mAngle_Ki = 0.001 ;
+        public static final double mAngle_Kp = 0.12;
+        public static final double mAngle_Ki = 0.00 ;
         public static final double mAngle_Kd = 0.001;
-        public static final double mAngle_Ks = 0.0;
+        public static final double mAngle_Ks = 0.035;
+        public static final double TOLERANCE = 0.5;
 
 
         public static final double PPR_FALCON = 2048;
 
         public static final double WHEEL_PEREMITER = 0.1016*Math.PI;
-        public static final double GEAR_RATIO_VEL = 8.14; //TODO: find the actual correct gear ratio
+        public static final double GEAR_RATIO_VEL = 8.14;
         public static final double PULSE_PER_METER = PPR_FALCON*GEAR_RATIO_VEL/WHEEL_PEREMITER;
 
         public static final double GEAR_RATIO_ANGLE = 12.8;
@@ -76,16 +77,18 @@ public final class Constants {
     }
 
     public final class Offsets{
-        public static final double FRONT_LEFT_OFFSET = 286.171875;
-        public static final double FRONT_RIGHT_OFFSET = 296.982;
-        public static final double BACK_LEFT_OFFSEST = 225.263;
-        public static final double BACK_RIGHT_OFFSEST = 109.335;
+        public static final double FRONT_LEFT_OFFSET = 273.603515625;
+        public static final double FRONT_RIGHT_OFFSET = 298.037109375;
+        public static final double BACK_LEFT_OFFSEST = 225.615234375;
+        public static final double BACK_RIGHT_OFFSEST = 109.51171875;
 
     }
     public final class Buttons {
         public static final int JOYSTICK_XY_PORT_NUM = 0;
         public static final int JOYSTICK_DIRECTION_PORT_NUM = 1;
-        public static final double JOYSTICK_RANGE = 0.1;
+
+        public static final int XBOX_PORT_NUM = 0;
+        public static final double JOYSTICK_RANGE = 0.2;
 
     }
 
@@ -106,7 +109,7 @@ public final class Constants {
         //pid param for x and y should be the same, but because the robot is a rectangle I thought it's
         //best to seperate.
 
-        public static final double max_VELOCITY = 3;
+        public static final double max_VELOCITY = 2;
         public static final double DEADBAND_AUTONOMOUS = 0.4;
         public static final double DEADBAND_AUTONOMOUS_RAD = 10/180*Math.PI;
     }
