@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.Drive2;
 import frc.robot.commands.DriveByJoystickCommand;
+import frc.robot.commands.DriveByXboxController;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.Utils;
 import frc.robot.RobotContainer;
@@ -64,12 +65,13 @@ public class Chassis extends SubsystemBase {
                 Constants.ModuleConst.BACK_LEFT_TURN_MOTOR_ID,
                 Constants.ModuleConst.BACK_LEFT_CANCODER_ID, Constants.ModuleConst.BACK_LEFT_SET_INVERT_TYPE);
 
-        swerveModules[0] = front_left;
-        swerveModules[1] = front_right;
-        swerveModules[2] = back_left;
-        swerveModules[3] = back_right;
+        swerveModules[0] = back_right;
+        swerveModules[1] = front_left;
+        swerveModules[2] = front_right;
+        swerveModules[3] = back_left;
+        
 
-        setDefaultCommand(new Drive2(this));
+        setDefaultCommand(new DriveByXboxController(this));
 
         SmartDashboard.putData("Field", getField());
 
@@ -186,8 +188,6 @@ public class Chassis extends SubsystemBase {
         return sModuleStatesOptimized;
     }
 
-    
-
     public SwerveModule[] getThisSwerveModules() {
         return swerveModules;
     }
@@ -224,6 +224,17 @@ public class Chassis extends SubsystemBase {
         field.setRobotPose(pose);
     }
 
+    public void calibrateAll() {
+        for (int i=0; i<swerveModules.length; i++) {
+            swerveModules[i].calibrate();
+        }
+
+        SmartDashboard.putNumber("offset front left", swerveModules[0].getOffset());
+        SmartDashboard.putNumber("offset front right", swerveModules[1].getOffset());
+        SmartDashboard.putNumber("offset back left", swerveModules[2].getOffset());
+        SmartDashboard.putNumber("offset back right", swerveModules[3].getOffset());
+    }
+
     public Field2d getField() {
         return field;
     }
@@ -231,6 +242,12 @@ public class Chassis extends SubsystemBase {
     public void setNeutralModeAngle(boolean isBrake) {
         for (int i = 0; i < swerveModules.length; i++) {
             swerveModules[i].setNeutraleModeSteerMotor(isBrake);
+        }
+    }
+
+    public void setNeutralModeVelocity(boolean isBrake) {
+        for (int i = 0; i < swerveModules.length; i++) {
+            swerveModules[i].setNeutraleModeMoveMotor(isBrake);
         }
     }
 
@@ -275,6 +292,9 @@ public class Chassis extends SubsystemBase {
 
         SmartDashboard.putNumber("module 3 angle", swerveModules[3].getAngle());
         SmartDashboard.putNumber("module 3 speed", swerveModules[3].getVel());
+
+        SmartDashboard.putData("Calibrate All", new InstantCommand(() ->
+        this.calibrateAll()));
 
         SwerveModuleState[] sms = getCurrentModuleStates();
         odometryUpdate(sms);

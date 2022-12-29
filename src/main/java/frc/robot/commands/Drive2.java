@@ -27,13 +27,13 @@ public class Drive2 extends CommandBase{
 
     @Override
     public void execute() {
-        //double vx = -Utils.timesMaxVelocity(Utils.getJoystickY(RobotContainer.joystickXY));
-        double vx = SmartDashboard.getNumber("vx", 0);
-        //double vy = Utils.timesMaxVelocity(Utils.getJoystickX(RobotContainer.joystickXY));
-        double vy = SmartDashboard.getNumber("vy", 0);
+        double vx = -Utils.timesMaxVelocity(Utils.getJoystickY(RobotContainer.joystickXY));
+        //double vx = SmartDashboard.getNumber("vx", 0);
+        double vy = Utils.timesMaxVelocity(Utils.getJoystickX(RobotContainer.joystickXY));
+        //double vy = SmartDashboard.getNumber("vy", 0);
         boolean isPressed = Utils.isButtoonPressed(RobotContainer.button);
 
-        SwerveModuleState[] sms = Utils.getModuleStates(vx, vy, isPressed, 
+        SwerveModuleState[] sms = Utils.getModuleStatesLeft(vx, vy, isPressed, 
         Rotation2d.fromDegrees(Utils.getGyroPosition(RobotContainer.gyro)));
 
         sms = chassis.getModulesOptimize(sms);

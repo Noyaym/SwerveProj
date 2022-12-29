@@ -77,17 +77,17 @@ public final class Constants {
     }
 
     public final class Offsets{
-        public static final double FRONT_LEFT_OFFSET = 273.603515625;
-        public static final double FRONT_RIGHT_OFFSET = 298.037109375;
+        public static final double FRONT_LEFT_OFFSET = 323.525390625;
+        public static final double FRONT_RIGHT_OFFSET = 297.685546875;
         public static final double BACK_LEFT_OFFSEST = 225.615234375;
-        public static final double BACK_RIGHT_OFFSEST = 109.51171875;
+        public static final double BACK_RIGHT_OFFSEST = 109.16015625;
 
     }
     public final class Buttons {
         public static final int JOYSTICK_XY_PORT_NUM = 0;
         public static final int JOYSTICK_DIRECTION_PORT_NUM = 1;
 
-        public static final int XBOX_PORT_NUM = 0;
+        public static final int XBOX_PORT_NUM = 2;
         public static final double JOYSTICK_RANGE = 0.2;
 
     }
@@ -109,7 +109,7 @@ public final class Constants {
         //pid param for x and y should be the same, but because the robot is a rectangle I thought it's
         //best to seperate.
 
-        public static final double max_VELOCITY = 2;
+        public static final double max_VELOCITY = 1;
         public static final double DEADBAND_AUTONOMOUS = 0.4;
         public static final double DEADBAND_AUTONOMOUS_RAD = 10/180*Math.PI;
     }
@@ -117,17 +117,17 @@ public final class Constants {
     
     public final static class Kinematics {
         // Locations for the swerve drive modules relative to the robot center.
-        public static final double FRONT_RIGHT_LOCATION_X = 0.307;
-        public static final double FRONT_RIGHT_LOCATION_Y = -0.262;
+        public static final double FRONT_RIGHT_LOCATION_X = 0.31515;
+        public static final double FRONT_RIGHT_LOCATION_Y = -0.2715;
         
-        public static final double FRONT_LEFT_LOCATION_X = 0.307;
-        public static final double FRONT_LEFT_LOCATION_Y = 0.262;
+        public static final double FRONT_LEFT_LOCATION_X = 0.31515;
+        public static final double FRONT_LEFT_LOCATION_Y = 0.2715;
         
-        public static final double BACK_LEFT_LOCATION_X = -0.307;
-        public static final double BACK_LEFT_LOCATION_Y = 0.262;
+        public static final double BACK_LEFT_LOCATION_X = -0.31515;
+        public static final double BACK_LEFT_LOCATION_Y = 0.2715;
         
-        public static final double BACK_RIGHT_LOCATION_X = -0.307;
-        public static final double BACK_RIGHT_LOCATION_Y = -0.262;
+        public static final double BACK_RIGHT_LOCATION_X = -0.31515;
+        public static final double BACK_RIGHT_LOCATION_Y = -0.2715;
         
         // define modules location
         public static final Translation2d FRONT_LEFT_LOCATION = new Translation2d(FRONT_LEFT_LOCATION_X,
@@ -140,10 +140,11 @@ public final class Constants {
         BACK_RIGHT_LOCATION_Y);
         
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
+            BACK_RIGHT_LOCATION,
             FRONT_LEFT_LOCATION,
             FRONT_RIGHT_LOCATION,
-            BACK_LEFT_LOCATION,
-            BACK_RIGHT_LOCATION);
+            BACK_LEFT_LOCATION
+            );
         }
 
 

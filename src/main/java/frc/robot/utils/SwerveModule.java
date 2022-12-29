@@ -131,11 +131,11 @@ public class SwerveModule {
     }
 
     public void setNeutraleModeSteerMotor(boolean isBrake) {
-        if (isBrake) {
-            mAngle.setNeutralMode(NeutralMode.Brake);
-        } else {
-            mAngle.setNeutralMode(NeutralMode.Coast);
-        }
+        mAngle.setNeutralMode(isBrake? NeutralMode.Brake:NeutralMode.Coast);
+    }
+
+    public void setNeutraleModeMoveMotor(boolean isBrake) {
+        mVel.setNeutralMode(isBrake? NeutralMode.Brake:NeutralMode.Coast);
     }
 
     public TalonFX getMoveMotor() {

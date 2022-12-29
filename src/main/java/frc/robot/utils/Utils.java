@@ -59,12 +59,25 @@ public class Utils {
         if (!isJoystickInRange(x)) {
             x = 0.0; }
         double angle = Math.atan2(y, x);
-        return angle*360;
+        return angle*360; //TODO: fix angle normalization
+
+    }
+
+    public static double getXBoxControllerAngle(XboxController xboxController) {
+        double y = xboxController.getLeftY();
+        if (!isJoystickInRange(y)) {
+            y = 0.0;}
+        double x = xboxController.getLeftX();
+        if (!isJoystickInRange(x)) {
+            x = 0.0; }
+        double angle = Math.atan2(y, x);
+        return angle*360; //TODO: fix angle normalization
 
     }
 
     public static double getXboxControllerX(XboxController xboxController) {
         double x = -xboxController.getLeftX();
+        System.out.println(x);
         double val;
         if (!isJoystickInRange(x)) {
             val = 0.0;
@@ -76,6 +89,7 @@ public class Utils {
 
     public static double getXboxControllerY(XboxController xboxController) {
         double y = -xboxController.getLeftY();
+        System.out.println(y);
         double val;
         if (!isJoystickInRange(y)) {
             val = 0.0;
@@ -84,9 +98,31 @@ public class Utils {
         }
         return val;
     }
+    
+    public static double pithagoras(double x, double y) {
+        return Math.sqrt(x*x+y*y);
+    }
+
+    public static double getXNormalizedXBox(){
+        double x = getXboxControllerX(RobotContainer.xBoxController);
+        double y = getXboxControllerY(RobotContainer.xBoxController);
+        double normalizedValue = timesMaxVelocity(pithagoras(x, y));
+        return normalizedValue*Math.cos(getXBoxControllerAngle(RobotContainer.xBoxController));
+    }
+
+    public static double getYNormalizedXBox(){
+        double x = getXboxControllerX(RobotContainer.xBoxController);
+        double y = getXboxControllerY(RobotContainer.xBoxController);
+        double normalizedValue = timesMaxVelocity(pithagoras(x, y));
+        return normalizedValue*Math.sin(getXBoxControllerAngle(RobotContainer.xBoxController));
+    }
 
     public static boolean isLeftBumperXboxPressed(XboxController xboxController) {
         return xboxController.getLeftBumper();
+    }
+
+    public static boolean isRightBumperXboxPressed(XboxController xboxController) {
+        return xboxController.getRightBumper();
     }
 
     public static double normalizeJoystick(double value) {
@@ -201,9 +237,18 @@ public class Utils {
         return sModuleStates;
     }
 
-    public static SwerveModuleState[] getModuleStates(double vx, double vy, boolean isPressed, Rotation2d currentAngle) {
+    public static SwerveModuleState[] getModuleStatesLeft(double vx, double vy, boolean isPressed, Rotation2d currentAngle) {
         double rps = 0;
         if(isPressed) rps = 0.5*Math.PI;
+        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rps, currentAngle);
+        SwerveModuleState[] sModuleStates = Constants.Kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
+
+        return sModuleStates;
+    }
+
+    public static SwerveModuleState[] getModuleStatesRight(double vx, double vy, boolean isPressed, Rotation2d currentAngle) {
+        double rps = 0;
+        if(isPressed) rps = -0.5*Math.PI;
         ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rps, currentAngle);
         SwerveModuleState[] sModuleStates = Constants.Kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
 

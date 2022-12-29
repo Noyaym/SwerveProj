@@ -21,18 +21,29 @@ public class DriveByXboxController extends CommandBase{
     public void initialize() {
         SmartDashboard.putNumber("vx", 0);
         SmartDashboard.putNumber("vy", 0);
+        chassis.setNeutralModeAngle(true);
+        chassis.setNeutralModeVelocity(true);
     }
 
     @Override
     public void execute() {
-        double vx = Utils.timesMaxVelocity(Utils.getXboxControllerY(RobotContainer.xBoxController));
+        SwerveModuleState[] sms;
+        double vx = Utils.getYNormalizedXBox();
         //double vx = SmartDashboard.getNumber("vx", 0);
-        double vy = Utils.timesMaxVelocity(Utils.getXboxControllerX(RobotContainer.xBoxController));
+        double vy = Utils.getXNormalizedXBox();
         //double vy = SmartDashboard.getNumber("vy", 0);
-        boolean isPressed = Utils.isLeftBumperXboxPressed(RobotContainer.xBoxController);
-
-        SwerveModuleState[] sms = Utils.getModuleStates(vx, vy, isPressed, 
+        boolean isPressedLeft = Utils.isLeftBumperXboxPressed(RobotContainer.xBoxController);
+        boolean isPressedRight = Utils.isRightBumperXboxPressed(RobotContainer.xBoxController);
+        // System.out.println("vx = "+ vx+ " vy= "+ vy+ " ispressed= "+ isPressed);
+        // System.out.println("value for get fun" + RobotContainer.xBoxController.getLeftY());
+        if(isPressedRight) {
+            sms = Utils.getModuleStatesRight(vx, vy, isPressedRight, 
         Rotation2d.fromDegrees(Utils.getGyroPosition(RobotContainer.gyro)));
+        }
+        else {
+            sms = Utils.getModuleStatesLeft(vx, vy, isPressedLeft, 
+        Rotation2d.fromDegrees(Utils.getGyroPosition(RobotContainer.gyro)));
+        }
 
         sms = chassis.getModulesOptimize(sms);
 
@@ -40,12 +51,18 @@ public class DriveByXboxController extends CommandBase{
         // SmartDashboard.putNumber("sms speed", sms[1].speedMetersPerSecond);
         //&& Utils.getOmega(ang)==0
         
-        if (vx == 0 && vy == 0 && !isPressed) {
+        if (vx == 0 && vy == 0 && !isPressedLeft && !isPressedRight) {
             chassis.setPowerAngle(0);
             chassis.setPowerVelocity(0);
         }
         else
             chassis.setModules(sms);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        chassis.setNeutralModeVelocity(false);
+        chassis.setNeutralModeAngle(false);
     }
     
 }
