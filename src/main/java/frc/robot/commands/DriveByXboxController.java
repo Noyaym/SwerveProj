@@ -21,17 +21,20 @@ public class DriveByXboxController extends CommandBase{
     public void initialize() {
         SmartDashboard.putNumber("vx", 0);
         SmartDashboard.putNumber("vy", 0);
-        chassis.setNeutralModeAngle(true);
-        chassis.setNeutralModeVelocity(true);
+        // chassis.setNeutralModeAngle(true);
+        // chassis.setNeutralModeVelocity(true);
     }
 
     @Override
     public void execute() {
+        double smt = 0;
         SwerveModuleState[] sms;
-        double vx = Utils.getYNormalizedXBox();
+        //double vx = Utils.getYNormalizedXBox();
         //double vx = SmartDashboard.getNumber("vx", 0);
-        double vy = Utils.getXNormalizedXBox();
+        double vx = -Utils.timesMaxVelocity(Utils.getXboxControllerX(RobotContainer.xBoxController));
+        //double vy = Utils.getXNormalizedXBox();
         //double vy = SmartDashboard.getNumber("vy", 0);
+        double vy = Utils.timesMaxVelocity(Utils.getXboxControllerY(RobotContainer.xBoxController));
         boolean isPressedLeft = Utils.isLeftBumperXboxPressed(RobotContainer.xBoxController);
         boolean isPressedRight = Utils.isRightBumperXboxPressed(RobotContainer.xBoxController);
         // System.out.println("vx = "+ vx+ " vy= "+ vy+ " ispressed= "+ isPressed);
@@ -57,6 +60,8 @@ public class DriveByXboxController extends CommandBase{
         }
         else
             chassis.setModules(sms);
+            smt = 1;
+            
     }
 
     @Override

@@ -46,8 +46,8 @@ public class Chassis extends SubsystemBase {
         this.gyro = gyro;
         this.field = new Field2d();
 
-        Pose2d zeroPose = new Pose2d(0, 0, getRotation2dGyroPosition());
-        odometry = new SwerveDriveOdometry(Constants.Kinematics.SWERVE_KINEMATICS, getRotation2dGyroPosition(), zeroPose);
+        //Pose2d zeroPose = new Pose2d(0, 0, getRotation2dGyroPosition());
+        odometry = new SwerveDriveOdometry(Constants.Kinematics.SWERVE_KINEMATICS, getRotation2dGyroPosition());
 
         swerveModules = new SwerveModule[Constants.NUMBER_OF_WHEELS];
 
@@ -72,11 +72,12 @@ public class Chassis extends SubsystemBase {
         
 
         setDefaultCommand(new DriveByXboxController(this));
+        calibrateGyro(0);
 
         SmartDashboard.putData("Field", getField());
 
         SmartDashboard.putData("reset gyro", new InstantCommand(() ->
-        setGyroZero()));
+        calibrateGyro(SmartDashboard.getNumber("gyro calibrate 2 angle", 0))));
 
 
 
@@ -212,7 +213,7 @@ public class Chassis extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
-    public void resetPose(Pose2d pose) { 
+    public void resetOdometry(Pose2d pose) { 
         odometry.resetPosition(pose, getRotation2dGyroPosition());
     }
 
@@ -269,8 +270,8 @@ public class Chassis extends SubsystemBase {
         }
     }
 
-    public void setGyroZero() {
-        RobotContainer.gyro.setFusedHeading(0);
+    public void calibrateGyro(double value) {
+        RobotContainer.gyro.setFusedHeading(value);
     }
 
     @Override
@@ -292,6 +293,9 @@ public class Chassis extends SubsystemBase {
 
         SmartDashboard.putNumber("module 3 angle", swerveModules[3].getAngle());
         SmartDashboard.putNumber("module 3 speed", swerveModules[3].getVel());
+
+        SmartDashboard.putNumber("Gyro Angle", getGyroPosition());
+        SmartDashboard.putNumber("gyro calibrate 2 angle", 0);
 
         SmartDashboard.putData("Calibrate All", new InstantCommand(() ->
         this.calibrateAll()));
