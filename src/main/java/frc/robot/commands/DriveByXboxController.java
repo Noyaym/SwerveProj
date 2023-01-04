@@ -21,8 +21,8 @@ public class DriveByXboxController extends CommandBase{
     public void initialize() {
         SmartDashboard.putNumber("vx", 0);
         SmartDashboard.putNumber("vy", 0);
-        // chassis.setNeutralModeAngle(true);
-        // chassis.setNeutralModeVelocity(true);
+        chassis.setNeutralModeAngle(true);
+        chassis.setNeutralModeVelocity(true);
     }
 
     @Override

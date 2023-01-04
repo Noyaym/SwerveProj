@@ -109,7 +109,7 @@ public final class Constants {
         //pid param for x and y should be the same, but because the robot is a rectangle I thought it's
         //best to seperate.
 
-        public static final double max_VELOCITY = 1;
+        public static final double max_VELOCITY = 2;
         public static final double DEADBAND_AUTONOMOUS = 0.4;
         public static final double DEADBAND_AUTONOMOUS_RAD = 10/180*Math.PI;
     }

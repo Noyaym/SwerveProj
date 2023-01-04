@@ -106,15 +106,17 @@ public class Utils {
     public static double getXNormalizedXBox(){
         double x = getXboxControllerX(RobotContainer.xBoxController);
         double y = getXboxControllerY(RobotContainer.xBoxController);
-        double normalizedValue = timesMaxVelocity(pithagoras(x, y));
-        return normalizedValue*Math.cos(getXBoxControllerAngle(RobotContainer.xBoxController));
+        Rotation2d rotation2dXboxController = new Rotation2d(x,y);
+        double xNormalized = timesMaxVelocity(x * rotation2dXboxController.getCos());
+        return xNormalized;
     }
 
     public static double getYNormalizedXBox(){
         double x = getXboxControllerX(RobotContainer.xBoxController);
         double y = getXboxControllerY(RobotContainer.xBoxController);
-        double normalizedValue = timesMaxVelocity(pithagoras(x, y));
-        return normalizedValue*Math.sin(getXBoxControllerAngle(RobotContainer.xBoxController));
+        Rotation2d rotation2dXboxController = new Rotation2d(x,y);
+        double yNormalized = timesMaxVelocity(x * rotation2dXboxController.getSin());
+        return yNormalized;
     }
 
     public static boolean isLeftBumperXboxPressed(XboxController xboxController) {
