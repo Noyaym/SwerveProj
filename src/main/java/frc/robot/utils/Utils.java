@@ -71,7 +71,7 @@ public class Utils {
         if (!isJoystickInRange(x)) {
             x = 0.0; }
         double angle = Math.atan2(y, x);
-        return angle*360; //TODO: fix angle normalization
+        return angle;
 
     }
 
@@ -105,17 +105,15 @@ public class Utils {
 
     public static double getXNormalizedXBox(){
         double x = getXboxControllerX(RobotContainer.xBoxController);
-        double y = getXboxControllerY(RobotContainer.xBoxController);
-        Rotation2d rotation2dXboxController = new Rotation2d(x,y);
-        double xNormalized = timesMaxVelocity(x * rotation2dXboxController.getCos());
+        double angle = getXBoxControllerAngle(RobotContainer.xBoxController);
+        double xNormalized = timesMaxVelocity(x * Math.cos(angle));
         return xNormalized;
     }
 
     public static double getYNormalizedXBox(){
-        double x = getXboxControllerX(RobotContainer.xBoxController);
         double y = getXboxControllerY(RobotContainer.xBoxController);
-        Rotation2d rotation2dXboxController = new Rotation2d(x,y);
-        double yNormalized = timesMaxVelocity(x * rotation2dXboxController.getSin());
+        double angle = getXBoxControllerAngle(RobotContainer.xBoxController);
+        double yNormalized = timesMaxVelocity(y * Math.sin(angle));
         return yNormalized;
     }
 
