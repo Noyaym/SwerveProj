@@ -88,7 +88,7 @@ public final class Constants {
         public static final int JOYSTICK_DIRECTION_PORT_NUM = 1;
 
         public static final int XBOX_PORT_NUM = 2;
-        public static final double JOYSTICK_RANGE = 0.2;
+        public static final double JOYSTICK_RANGE = 0.1;
 
     }
 
@@ -109,9 +109,11 @@ public final class Constants {
         //pid param for x and y should be the same, but because the robot is a rectangle I thought it's
         //best to seperate.
 
-        public static final double max_VELOCITY = 1;
+        public static final double MAX_VELOCITY_XY = 1;
+        public static final double MAX_RADPERSEC = 1*Math.PI;
         public static final double DEADBAND_AUTONOMOUS = 0.4;
         public static final double DEADBAND_AUTONOMOUS_RAD = 10/180*Math.PI;
+        public static final double AUTONOMOUS_VELOCITY = -1;
     }
 
     

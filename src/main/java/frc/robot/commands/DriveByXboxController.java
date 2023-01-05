@@ -11,6 +11,7 @@ import frc.robot.utils.Utils;
 public class DriveByXboxController extends CommandBase{
 
     private Chassis chassis;
+    private SwerveModuleState[] sms;
 
     public DriveByXboxController(Chassis ch) {
         this.chassis = ch;
@@ -27,18 +28,10 @@ public class DriveByXboxController extends CommandBase{
 
     @Override
     public void execute() {
-        double smt = 0;
-        SwerveModuleState[] sms;
         double vx = Utils.getYNormalizedXBox();
-        //double vx = SmartDashboard.getNumber("vx", 0);
-        //double vx = -Utils.timesMaxVelocity(Utils.getXboxControllerX(RobotContainer.xBoxController));
         double vy = Utils.getXNormalizedXBox();
-        //double vy = SmartDashboard.getNumber("vy", 0);
-        //double vy = Utils.timesMaxVelocity(Utils.getXboxControllerY(RobotContainer.xBoxController));
         boolean isPressedLeft = Utils.isLeftBumperXboxPressed(RobotContainer.xBoxController);
         boolean isPressedRight = Utils.isRightBumperXboxPressed(RobotContainer.xBoxController);
-        System.out.println("vx = "+ vx+ " vy= "+ vy);
-        // System.out.println("value for get fun" + RobotContainer.xBoxController.getLeftY());
         if(isPressedRight) {
             sms = Utils.getModuleStatesRight(vx, vy, isPressedRight, 
         Rotation2d.fromDegrees(Utils.getGyroPosition(RobotContainer.gyro)));
@@ -49,18 +42,12 @@ public class DriveByXboxController extends CommandBase{
         }
 
         sms = chassis.getModulesOptimize(sms);
-
-        // SmartDashboard.putNumber("sms angle", sms[1].angle.getDegrees());
-        // SmartDashboard.putNumber("sms speed", sms[1].speedMetersPerSecond);
-        //&& Utils.getOmega(ang)==0
-        
         if (vx == 0 && vy == 0 && !isPressedLeft && !isPressedRight) {
             chassis.setPowerAngle(0);
             chassis.setPowerVelocity(0);
         }
         else
             chassis.setModules(sms);
-            smt = 1;
             
     }
 

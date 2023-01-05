@@ -59,7 +59,7 @@ public class Utils {
         if (!isJoystickInRange(x)) {
             x = 0.0; }
         double angle = Math.atan2(y, x);
-        return angle*360; //TODO: fix angle normalization
+        return angle;
 
     }
 
@@ -100,6 +100,26 @@ public class Utils {
         }
         return val;
     }
+
+    public static double getXBoxControllerTriggerLeft(XboxController xboxController) {
+        double val = xboxController.getLeftTriggerAxis();
+        if (!isJoystickInRange(val)) {
+            val = 0.0;
+        } else {
+            val = normalizeTrigger(val);
+        }
+        return val;
+    }
+
+    public static double getXBoxControllerTriggerRight(XboxController xboxController) {
+        double val = xboxController.getRightTriggerAxis();
+        if (!isJoystickInRange(val)) {
+            val = 0.0;
+        } else {
+            val = normalizeTrigger(val);
+        }
+        return val;
+    }
     
     public static double pithagoras(double x, double y) {
         return Math.sqrt(x*x+y*y);
@@ -131,6 +151,10 @@ public class Utils {
         return Math.signum(value) * ((1 / 1.1) * Math.pow(value, 2) + (1 - 1 / 1.1));
     }
 
+    public static double normalizeTrigger(double value) {
+        return value*value;
+    }
+
     /**
      * Checks if joystick value is above a specific value
      * @param value the value
@@ -142,7 +166,7 @@ public class Utils {
     }
 
     public static double timesMaxVelocity(double valueJoystick) {
-        return valueJoystick*Constants.ChassisConst.max_VELOCITY;
+        return valueJoystick*Constants.ChassisConst.MAX_VELOCITY_XY;
     }
 
     public static double normalizeAngle(double angle) {
@@ -257,6 +281,15 @@ public class Utils {
         return sModuleStates;
     }
 
+    public static SwerveModuleState[] getModuleStatesTriggerVal(double vx, double vy, double triggerVal, Rotation2d currentAngle) {
+        double rps = triggerVal*Constants.ChassisConst.MAX_RADPERSEC;
+        ChassisSpeeds cspeeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, rps, currentAngle);
+        SwerveModuleState[] sModuleStates = Constants.Kinematics.SWERVE_KINEMATICS.toSwerveModuleStates(cspeeds);
+
+        return sModuleStates;
+    }
+
+
     
 
     public static double getGyroPosition(PigeonIMU gyro) {
@@ -278,9 +311,9 @@ public class Utils {
         return Math.atan2(y, x);
     }
 
-    public static SwerveModuleState[] driveToSimple(double wantedVelocity, Pose2d startPose, Pose2d targetPose) {
-        double errorX = targetPose.getX() - startPose.getX();
-        double errorY = targetPose.getY() - startPose.getY();
+    public static SwerveModuleState[] driveToSimple(double wantedVelocity, Pose2d currentPose, Pose2d targetPose) {
+        double errorX = targetPose.getX() - currentPose.getX();
+        double errorY = targetPose.getY() - currentPose.getY();
         double errorRad = targetPose.getRotation().getRadians() - 
         radianFromDegrees(getGyroPosition(RobotContainer.gyro));
         errorRad = optimizeRadDemacia(errorRad);
