@@ -37,7 +37,7 @@ public class DriveByXboxController extends CommandBase{
         //double vy = Utils.timesMaxVelocity(Utils.getXboxControllerY(RobotContainer.xBoxController));
         boolean isPressedLeft = Utils.isLeftBumperXboxPressed(RobotContainer.xBoxController);
         boolean isPressedRight = Utils.isRightBumperXboxPressed(RobotContainer.xBoxController);
-        // System.out.println("vx = "+ vx+ " vy= "+ vy+ " ispressed= "+ isPressed);
+        System.out.println("vx = "+ vx+ " vy= "+ vy);
         // System.out.println("value for get fun" + RobotContainer.xBoxController.getLeftY());
         if(isPressedRight) {
             sms = Utils.getModuleStatesRight(vx, vy, isPressedRight, 

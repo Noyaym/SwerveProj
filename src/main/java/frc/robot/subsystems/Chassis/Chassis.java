@@ -230,10 +230,10 @@ public class Chassis extends SubsystemBase {
             swerveModules[i].calibrate();
         }
 
-        SmartDashboard.putNumber("offset front left", swerveModules[0].getOffset());
-        SmartDashboard.putNumber("offset front right", swerveModules[1].getOffset());
-        SmartDashboard.putNumber("offset back left", swerveModules[2].getOffset());
-        SmartDashboard.putNumber("offset back right", swerveModules[3].getOffset());
+        SmartDashboard.putNumber("offset back right", swerveModules[0].getOffset());
+        SmartDashboard.putNumber("offset front left", swerveModules[1].getOffset());
+        SmartDashboard.putNumber("offset front right", swerveModules[2].getOffset());
+        SmartDashboard.putNumber("offset back left", swerveModules[3].getOffset());
     }
 
     public Field2d getField() {

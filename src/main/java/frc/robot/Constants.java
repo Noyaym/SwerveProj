@@ -77,10 +77,10 @@ public final class Constants {
     }
 
     public final class Offsets{
-        public static final double FRONT_LEFT_OFFSET = 323.525390625;
-        public static final double FRONT_RIGHT_OFFSET = 297.685546875;
-        public static final double BACK_LEFT_OFFSEST = 225.615234375;
-        public static final double BACK_RIGHT_OFFSEST = 109.16015625;
+        public static final double FRONT_LEFT_OFFSET = 183.251953125;
+        public static final double FRONT_RIGHT_OFFSET = 298.828125;
+        public static final double BACK_LEFT_OFFSEST = 225.791015625;
+        public static final double BACK_RIGHT_OFFSEST = 106.787109375;
 
     }
     public final class Buttons {
@@ -109,7 +109,7 @@ public final class Constants {
         //pid param for x and y should be the same, but because the robot is a rectangle I thought it's
         //best to seperate.
 
-        public static final double max_VELOCITY = 2;
+        public static final double max_VELOCITY = 1;
         public static final double DEADBAND_AUTONOMOUS = 0.4;
         public static final double DEADBAND_AUTONOMOUS_RAD = 10/180*Math.PI;
     }

@@ -70,6 +70,8 @@ public class Utils {
         double x = xboxController.getLeftX();
         if (!isJoystickInRange(x)) {
             x = 0.0; }
+        x = Math.abs(x);
+        y = Math.abs(y);
         double angle = Math.atan2(y, x);
         return angle;
 
@@ -179,7 +181,7 @@ public class Utils {
         return radPerSec;
     }
 
-    public static SwerveModuleState[] driveTo(Pose2d currentPose, Pose2d targetPose) {
+    public static SwerveModuleState[] driveToHolonimic(Pose2d currentPose, Pose2d targetPose) {
         double errorX = targetPose.getX() - currentPose.getX();
         double errorY = targetPose.getY() - currentPose.getY();
         double errorRad = targetPose.getRotation().getRadians() - 
@@ -268,6 +270,30 @@ public class Utils {
     public static double radianFromDegrees(double degree) {
         degree = normalizeAngle(degree);
         return degree*Math.PI/180;
+    }
+
+    public static double calcAngle(double x, double y) {
+        x = Math.abs(x);
+        y = Math.abs(y);
+        return Math.atan2(y, x);
+    }
+
+    public static SwerveModuleState[] driveToSimple(double wantedVelocity, Pose2d startPose, Pose2d targetPose) {
+        double errorX = targetPose.getX() - startPose.getX();
+        double errorY = targetPose.getY() - startPose.getY();
+        double errorRad = targetPose.getRotation().getRadians() - 
+        radianFromDegrees(getGyroPosition(RobotContainer.gyro));
+        errorRad = optimizeRadDemacia(errorRad);
+
+        double angle = calcAngle(errorX, errorY);
+        double vx = wantedVelocity*Math.cos(angle);
+        double vy = wantedVelocity*Math.sin(angle);
+        double radPerSec = pidRad.calculate(errorRad);
+        Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.gyro));
+
+        return getModuleStates(vx, vy, radPerSec, currentAngle);
+
+
     }
 
 }
