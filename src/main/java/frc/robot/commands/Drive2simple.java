@@ -18,6 +18,11 @@ public class Drive2simple extends CommandBase{
         addRequirements(chassis);
         this.targetPose = targetPose;
     }
+    @Override
+    public void initialize() {
+        chassis.setNeutralModeAngle(true);
+        chassis.setNeutralModeVelocity(true);
+    }
 
     @Override
     public void execute() {
@@ -28,7 +33,14 @@ public class Drive2simple extends CommandBase{
 
     @Override
     public boolean isFinished() {
+        System.out.println(Utils.isInPose(chassis.getPose(), targetPose));
         return Utils.isInPose(chassis.getPose(), targetPose);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        chassis.setNeutralModeAngle(false);
+        chassis.setNeutralModeVelocity(false);
     }
     
 }

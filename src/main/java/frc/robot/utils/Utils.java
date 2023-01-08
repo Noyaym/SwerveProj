@@ -103,11 +103,13 @@ public class Utils {
 
     public static double getXBoxControllerTriggerLeft(XboxController xboxController) {
         double val = xboxController.getLeftTriggerAxis();
+        SmartDashboard.putNumber("trigger val bf", val);
         if (!isJoystickInRange(val)) {
             val = 0.0;
         } else {
             val = normalizeTrigger(val);
         }
+        SmartDashboard.putNumber("trigger value", val);
         return val;
     }
 
@@ -223,6 +225,7 @@ public class Utils {
 
     public static boolean isInPose(Pose2d currentPose, Pose2d targetPose) {
         double errorX = targetPose.getX() - currentPose.getX();
+        System.out.println("targetPosex= " + targetPose.getX());
         double errorY = targetPose.getY() - currentPose.getY();
         double errorRad = targetPose.getRotation().getRadians() - 
         radianFromDegrees(getGyroPosition(RobotContainer.gyro));
@@ -322,6 +325,8 @@ public class Utils {
         double vx = wantedVelocity*Math.cos(angle);
         double vy = wantedVelocity*Math.sin(angle);
         double radPerSec = pidRad.calculate(errorRad);
+        System.out.println("angle=" + angle+ " vx=" + vx + " vy=" + vy + " radpersec=" + radPerSec);
+        System.out.println(" errorX" + errorX + " errorY=" + errorY + " errorRad" + errorRad);
         Rotation2d currentAngle = Rotation2d.fromDegrees(getGyroPosition(RobotContainer.gyro));
 
         return getModuleStates(vx, vy, radPerSec, currentAngle);

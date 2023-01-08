@@ -23,13 +23,11 @@ public class XBoxControl2 extends CommandBase{
         addRequirements(chassis);
     }
 
-    private void addRequirements(Chassis chassis2) {
-    }
-
     @Override
     public void initialize() {
         SmartDashboard.putNumber("vx", 0);
         SmartDashboard.putNumber("vy", 0);
+        chassis.calibrateGyro(-30);
         chassis.setNeutralModeAngle(true);
         chassis.setNeutralModeVelocity(true);
     }
@@ -46,7 +44,7 @@ public class XBoxControl2 extends CommandBase{
             Rotation2d.fromDegrees(Utils.getGyroPosition(RobotContainer.gyro)));
         }
 
-        if (leftTriggerVal!=0) {
+        else {
             swerveModulesStates = Utils.getModuleStatesTriggerVal(vx, vy, leftTriggerVal, 
             Rotation2d.fromDegrees(Utils.getGyroPosition(RobotContainer.gyro)));
         }

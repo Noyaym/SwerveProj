@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.Drive2;
 import frc.robot.commands.DriveByJoystickCommand;
 import frc.robot.commands.DriveByXboxController;
+import frc.robot.commands.XBoxControl2;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.Utils;
 import frc.robot.RobotContainer;
@@ -72,7 +73,7 @@ public class Chassis extends SubsystemBase {
         
 
         setDefaultCommand(new DriveByXboxController(this));
-        calibrateGyro(0);
+        calibrateGyro(-30);
 
         SmartDashboard.putData("Field", getField());
 
@@ -94,7 +95,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public SwerveModuleState[] getModulesOptimizedAutonomous(Pose2d currentPose, Pose2d targetPose) {
-        SwerveModuleState[] sModuleStates = Utils.driveTo(currentPose, targetPose);
+        SwerveModuleState[] sModuleStates = Utils.driveToHolonimic(currentPose, targetPose);
         SwerveModuleState[] sModuleStatesOptimized = new SwerveModuleState[sModuleStates.length];
         
 
@@ -194,7 +195,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public double getGyroPosition() {
-        return gyro.getFusedHeading();
+        return RobotContainer.gyro.getFusedHeading();
     }
 
     public Rotation2d getRotation2dGyroPosition() {
@@ -271,13 +272,13 @@ public class Chassis extends SubsystemBase {
     }
 
     public void calibrateGyro(double value) {
+        SmartDashboard.putNumber("is gyro calibrated", value);
         RobotContainer.gyro.setFusedHeading(value);
     }
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        
-
+        SmartDashboard.putNumber("gyro calibrate 2 angle", 0);
     }
 
     @Override
@@ -295,10 +296,14 @@ public class Chassis extends SubsystemBase {
         SmartDashboard.putNumber("module 3 speed", swerveModules[3].getVel());
 
         SmartDashboard.putNumber("Gyro Angle", getGyroPosition());
-        SmartDashboard.putNumber("gyro calibrate 2 angle", 0);
+
 
         SmartDashboard.putData("Calibrate All", new InstantCommand(() ->
         this.calibrateAll()));
+
+        SmartDashboard.putNumber("current Pose2d x", getPose().getX());
+        SmartDashboard.putNumber("current Pose2d y", getPose().getY());
+
 
         SwerveModuleState[] sms = getCurrentModuleStates();
         odometryUpdate(sms);

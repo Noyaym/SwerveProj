@@ -95,7 +95,7 @@ public final class Constants {
     public final static class ChassisConst {
         public static final int gyro_PORT_NUM = 14;
         public final static Translation2d[] wheelsMeters = new Translation2d[] {};
-        public static final double ANGLE_2RADPERSEC_Kp = 0.2;
+        public static final double ANGLE_2RADPERSEC_Kp = 1;
         public static final double ANGLE_2RADPERSEC_Ki = 0;
         public static final double ANGLE_2RADPERSEC_Kd = 0;
 
@@ -112,8 +112,8 @@ public final class Constants {
         public static final double MAX_VELOCITY_XY = 1;
         public static final double MAX_RADPERSEC = 1*Math.PI;
         public static final double DEADBAND_AUTONOMOUS = 0.4;
-        public static final double DEADBAND_AUTONOMOUS_RAD = 10/180*Math.PI;
-        public static final double AUTONOMOUS_VELOCITY = -1;
+        public static final double DEADBAND_AUTONOMOUS_RAD = 0.1745;
+        public static final double AUTONOMOUS_VELOCITY = 0.5;
     }
 
     
