@@ -35,7 +35,7 @@ public class Utils {
         if (!isJoystickInRange(x)) {
             val = 0.0;
         } else {
-            val = normalizeJoystick(x);
+            val = normalizeControlVal(x);
         }
         return val;
     }
@@ -46,7 +46,7 @@ public class Utils {
         if (!isJoystickInRange(y)) {
             val = 0.0;
         } else {
-            val = normalizeJoystick(y);
+            val = normalizeControlVal(y);
         }
         return val;
     }
@@ -84,7 +84,7 @@ public class Utils {
         if (!isJoystickInRange(x)) {
             val = 0.0;
         } else {
-            val = normalizeJoystick(x);
+            val = normalizeControlVal(x);
         }
         return val;
     }
@@ -96,7 +96,7 @@ public class Utils {
         if (!isJoystickInRange(y)) {
             val = 0.0;
         } else {
-            val = normalizeJoystick(y);
+            val = normalizeControlVal(y);
         }
         return val;
     }
@@ -107,7 +107,7 @@ public class Utils {
         if (!isJoystickInRange(val)) {
             val = 0.0;
         } else {
-            val = normalizeTrigger(val);
+            val = normalizeControlVal(val);
         }
         SmartDashboard.putNumber("trigger value", val);
         return val;
@@ -118,7 +118,7 @@ public class Utils {
         if (!isJoystickInRange(val)) {
             val = 0.0;
         } else {
-            val = normalizeTrigger(val);
+            val = normalizeControlVal(val);
         }
         return val;
     }
@@ -149,12 +149,8 @@ public class Utils {
         return xboxController.getRightBumper();
     }
 
-    public static double normalizeJoystick(double value) {
+    public static double normalizeControlVal(double value) {
         return Math.signum(value) * ((1 / 1.1) * Math.pow(value, 2) + (1 - 1 / 1.1));
-    }
-
-    public static double normalizeTrigger(double value) {
-        return value*value;
     }
 
     /**
